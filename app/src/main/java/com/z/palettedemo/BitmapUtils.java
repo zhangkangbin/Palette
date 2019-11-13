@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+
 import java.util.List;
 
 public class BitmapUtils {
@@ -49,7 +50,7 @@ public class BitmapUtils {
         return retBmp;
     }
 
-    public static Bitmap newBitmap2(Bitmap bmp,  List<Palette.Swatch> swatchList) {
+    public static Bitmap newBitmap2(Bitmap bmp, List<Palette.Swatch> swatchList) {
         Bitmap retBmp;
 
         int width = bmp.getWidth();
@@ -63,16 +64,25 @@ public class BitmapUtils {
         canvas.drawBitmap(bmp, 0, 0, null);
 
 
-        int h=height/ swatchList.size();
+        int h = height / swatchList.size();
 
-        int jianju=0;
+        int jianju = 0;
 
-        for(Palette.Swatch color:swatchList){
+        int  size=swatchList.size();
+
+        for (int i = size - 1; i >= 0; i--) {
+            Palette.Swatch color = swatchList.get(i);
             Paint paint=new Paint();
             paint.setColor(color.getRgb());
             canvas.drawRect(width,jianju,width+colorCardWith,jianju+h,paint);
             jianju=jianju+h;
         }
+   /*     for(Palette.Swatch color:swatchList){
+            Paint paint=new Paint();
+            paint.setColor(color.getRgb());
+            canvas.drawRect(width,jianju,width+colorCardWith,jianju+h,paint);
+            jianju=jianju+h;
+        }*/
 
         Log.d("mytest", "newBitmap2");
 
