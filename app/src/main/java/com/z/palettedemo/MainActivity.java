@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Environment;
@@ -28,6 +29,8 @@ import com.z.palettedemo.adapter.RecyclerViewAdapter;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         imageCard = findViewById(R.id.imageCard);
         findViewById(R.id.selectView).setOnClickListener(v -> selectImage());
+        findViewById(R.id.saveImage).setOnClickListener(v -> saveImage());
 
 
     }
@@ -73,27 +77,41 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
+    Bitmap newBmp;
+    File imageFile;
     private void mergeColor(List<Palette.Swatch> swatches) {
 
+        if(imagePath==null) return;
 
-            File zhang = new File(imagePath);
+         imageFile = new File(imagePath);
 
+        try {
+            Bitmap bitmap1 = BitmapFactory.decodeStream(new FileInputStream(imageFile));
+
+            newBmp = BitmapUtils.newBitmap2(bitmap1, swatches);
+            imageCard.setImageBitmap(newBmp);
+
+            Toast.makeText(this, "成功", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void saveImage(){
+        File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), new Date().toString() +imageFile.getName());
+        if (!newFile.exists()) {
             try {
-                Bitmap bitmap1 = BitmapFactory.decodeStream(new FileInputStream(zhang));
+                newFile.createNewFile();
+                BitmapUtils.save(newBmp, newFile, Bitmap.CompressFormat.JPEG, true);
 
-                Bitmap newBmp = BitmapUtils.newBitmap2(bitmap1, swatches);
-                imageCard.setImageBitmap(newBmp);
- /*               File zhangphil = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "zhangphil.jpg");
-                if (!zhangphil.exists())
-                    zhangphil.createNewFile();
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(newFile)));
 
-              BitmapUtils.save(newBmp, zhangphil, Bitmap.CompressFormat.JPEG, true);*/
-                 Toast.makeText(this, "成功", Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
+                Toast.makeText(this, "save success", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-
+        }
 
 
     }
@@ -224,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
                 // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
                 // 4.media.getAndroidQToPath();为Android Q版本特有返回的字段，此字段有值就用来做上传使用
-                imagePath = selectList.get(0).getPath();
+                imagePath = selectList.get(0).getCompressPath();
                 getColor();
                 //   merge(selectList);
             }
