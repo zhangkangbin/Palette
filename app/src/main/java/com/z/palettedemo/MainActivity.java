@@ -7,12 +7,11 @@ import android.graphics.BitmapFactory;
 
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -25,13 +24,17 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.z.palettedemo.adapter.RecyclerViewAdapter;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    ImageView imageCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,61 +43,72 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
+        imageCard = findViewById(R.id.imageCard);
         findViewById(R.id.selectView).setOnClickListener(v -> selectImage());
 
 
     }
 
 
-    class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
-        List<Palette.Swatch> swatchList;
+    private void merge(List<LocalMedia> selectList) {
 
-        public RecyclerViewAdapter(List<Palette.Swatch> swatchList) {
-            this.swatchList = swatchList;
+
+        File zhang = new File(selectList.get(0).getPath());
+        File phil = new File(selectList.get(1).getPath());
+
+        try {
+            Bitmap bitmap1 = BitmapFactory.decodeStream(new FileInputStream(zhang));
+            Bitmap bitmap2 = BitmapFactory.decodeStream(new FileInputStream(phil));
+
+            Bitmap newBmp = BitmapUtils.newBitmap(bitmap1, bitmap2);
+
+            File zhangphil = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "zhangphil.jpg");
+            if (!zhangphil.exists())
+                zhangphil.createNewFile();
+            BitmapUtils.save(newBmp, zhangphil, Bitmap.CompressFormat.JPEG, true);
+            // Toast.makeText(this, "成功", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_main, viewGroup, false));
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-
-            viewHolder.mView.setBackgroundColor(swatchList.get(i).getRgb());
-        }
-
-        @Override
-        public int getItemCount() {
-            return swatchList.size();
-        }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mView;
+    private void mergeColor(List<Palette.Swatch> swatches) {
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView.findViewById(R.id.image);
-        }
+
+            File zhang = new File(imagePath);
+
+            try {
+                Bitmap bitmap1 = BitmapFactory.decodeStream(new FileInputStream(zhang));
+
+                Bitmap newBmp = BitmapUtils.newBitmap2(bitmap1, swatches);
+                imageCard.setImageBitmap(newBmp);
+ /*               File zhangphil = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "zhangphil.jpg");
+                if (!zhangphil.exists())
+                    zhangphil.createNewFile();
+
+              BitmapUtils.save(newBmp, zhangphil, Bitmap.CompressFormat.JPEG, true);*/
+                 Toast.makeText(this, "成功", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
     }
 
     private void getColor() {
 
-
         if (TextUtils.isEmpty(imagePath)) {
             return;
         }
-
         //目标bitmap
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
         //  Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aa);
 
         Palette.Builder builder = Palette.from(bitmap);
-        builder.maximumColorCount(16);
+        builder.maximumColorCount(10);
         builder.addFilter(new Palette.Filter() {
 
             private static final float BLACK_MAX_LIGHTNESS = 0.05f;
@@ -139,9 +153,8 @@ public class MainActivity extends AppCompatActivity {
 
                 List<Palette.Swatch> swatchList = palette.getSwatches();
 
-
                 recyclerView.setAdapter(new RecyclerViewAdapter(swatchList));
-
+                mergeColor(swatchList);
                 Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();//获取有活力的颜色样本
                 if (vibrantSwatch != null) {
                     Log.d("test", "活力的颜色样本:" + vibrantSwatch.getTitleTextColor());
@@ -169,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();//获取有活力 暗色的样本
 
-                if (lightMutedSwatch != null) {
+                if (darkMutedSwatch != null) {
                     Log.d("test", "柔和暗色颜色样本:" + darkMutedSwatch.getRgb());
                 }
  /*               Palette.Swatch lightVibrantSwatch = palette.getLightVibrantSwatch();//获取有活力 亮色的样本
@@ -192,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
     private void selectImage() {
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
-                .maxSelectNum(1)
+                .maxSelectNum(2)
                 .compress(true)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
     }
@@ -213,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 // 4.media.getAndroidQToPath();为Android Q版本特有返回的字段，此字段有值就用来做上传使用
                 imagePath = selectList.get(0).getPath();
                 getColor();
+                //   merge(selectList);
             }
         }
     }
