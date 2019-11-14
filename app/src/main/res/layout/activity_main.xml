@@ -26,6 +26,14 @@
             android:text="save img" />
 
     </LinearLayout>
+    <SeekBar
+        android:id="@+id/colorCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="2dp"
+        android:max="10"
+        android:progress="6"
+        />
 
     <ImageView
         android:id="@+id/imageCard"

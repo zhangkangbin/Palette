@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ImageView imageCard;
+    SeekBar colorCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         imageCard = findViewById(R.id.imageCard);
         findViewById(R.id.selectView).setOnClickListener(v -> selectImage());
         findViewById(R.id.saveImage).setOnClickListener(v -> saveImage());
-
+        colorCount=findViewById(R.id.colorCount);
 
     }
 
@@ -77,13 +79,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     Bitmap newBmp;
     File imageFile;
+
     private void mergeColor(List<Palette.Swatch> swatches) {
 
-        if(imagePath==null) return;
+        if (imagePath == null) return;
 
-         imageFile = new File(imagePath);
+        imageFile = new File(imagePath);
 
         try {
             Bitmap bitmap1 = BitmapFactory.decodeStream(new FileInputStream(imageFile));
@@ -98,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void saveImage(){
-        File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), new Date().toString() +imageFile.getName());
+    private void saveImage() {
+        File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), new Date().toString() + imageFile.getName());
         if (!newFile.exists()) {
             try {
                 newFile.createNewFile();
@@ -121,12 +125,15 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(imagePath)) {
             return;
         }
+
+        int maximumColorCount=colorCount.getProgress();
+
         //目标bitmap
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
         //  Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aa);
 
         Palette.Builder builder = Palette.from(bitmap);
-        builder.maximumColorCount(10);
+        builder.maximumColorCount(maximumColorCount);
         builder.addFilter(new Palette.Filter() {
 
             private static final float BLACK_MAX_LIGHTNESS = 0.05f;
@@ -153,7 +160,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return hslColor[2] >= WHITE_MIN_LIGHTNESS;
             }
-
+            private boolean isNearRedILine(float[] hslColor) {
+                return hslColor[0] >= 10f && hslColor[0] <= 37f && hslColor[1] <= 0.82f;
+            }
             @Override
             public boolean isAllowed(int rgb, @NonNull float[] hsl) {
                 StringBuilder builder1 = new StringBuilder();
@@ -161,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     builder1.append(f + "-");
                 }
                 Log.d("test", rgb + "____" + builder1.toString());
-                return !isWhite(hsl) && !isBlack(hsl);
+                return !isWhite(hsl) && !isBlack(hsl)&& !isNearRedILine(hsl);
 
             }
         });
