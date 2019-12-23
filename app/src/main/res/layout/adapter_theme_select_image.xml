@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ThemeDesignActivity">
 
-    <ImageView
+    <com.z.palettedemo.view.ZImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="60dp"
+        android:background="@color/bar_grey_90"
+        android:scaleType="centerCrop"
         android:id="@+id/image"
         />
 

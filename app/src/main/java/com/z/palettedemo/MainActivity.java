@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.saveImage).setOnClickListener(v -> saveImage());
         colorSeekBar = findViewById(R.id.colorSeekBar);
 
+        findViewById(R.id.themeDesign).setOnClickListener(v -> startActivity(new Intent(this, ThemeDesignActivity.class)));
     }
 
 
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         //不加载图片到内存里面
         options.inJustDecodeBounds = false;
         //目标bitmap
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath,options);
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
         //  Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aa);
 
         Palette.Builder builder = Palette.from(bitmap);
@@ -184,8 +186,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGenerated(Palette palette) {
 
-                if(palette==null) return;
-                if(palette.getSwatches().isEmpty()) return;
+                if (palette == null) return;
+                if (palette.getSwatches().isEmpty()) return;
 
                 List<Palette.Swatch> swatchList = palette.getSwatches();
 

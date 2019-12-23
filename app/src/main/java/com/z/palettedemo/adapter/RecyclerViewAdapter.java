@@ -39,7 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mView;
+        private ImageView mView;
 
         public ViewHolder(View itemView) {
             super(itemView);
