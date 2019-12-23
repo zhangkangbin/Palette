@@ -27,6 +27,7 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.z.palettedemo.adapter.RecyclerViewAdapter;
+import com.z.palettedemo.view.ColorSeekBar;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ImageView imageCard;
-    SeekBar colorCount;
+    ColorSeekBar colorSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         imageCard = findViewById(R.id.imageCard);
         findViewById(R.id.selectView).setOnClickListener(v -> selectImage());
         findViewById(R.id.saveImage).setOnClickListener(v -> saveImage());
-        colorCount=findViewById(R.id.colorCount);
+        colorSeekBar = findViewById(R.id.colorSeekBar);
 
     }
 
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         imageFile = new File(imagePath);
 
         try {
+
             Bitmap bitmap1 = BitmapFactory.decodeStream(new FileInputStream(imageFile));
 
             newBmp = BitmapUtils.newBitmap2(bitmap1, swatches);
@@ -126,10 +128,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        int maximumColorCount=colorCount.getProgress();
-
+        int maximumColorCount = colorSeekBar.getProgress();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        //不加载图片到内存里面
+        options.inJustDecodeBounds = false;
         //目标bitmap
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath,options);
         //  Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aa);
 
         Palette.Builder builder = Palette.from(bitmap);
@@ -160,9 +164,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return hslColor[2] >= WHITE_MIN_LIGHTNESS;
             }
+
             private boolean isNearRedILine(float[] hslColor) {
                 return hslColor[0] >= 10f && hslColor[0] <= 37f && hslColor[1] <= 0.82f;
             }
+
             @Override
             public boolean isAllowed(int rgb, @NonNull float[] hsl) {
                 StringBuilder builder1 = new StringBuilder();
@@ -170,13 +176,16 @@ public class MainActivity extends AppCompatActivity {
                     builder1.append(f + "-");
                 }
                 Log.d("test", rgb + "____" + builder1.toString());
-                return !isWhite(hsl) && !isBlack(hsl)&& !isNearRedILine(hsl);
+                return !isWhite(hsl) && !isBlack(hsl) && !isNearRedILine(hsl);
 
             }
         });
         builder.generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(Palette palette) {
+
+                if(palette==null) return;
+                if(palette.getSwatches().isEmpty()) return;
 
                 List<Palette.Swatch> swatchList = palette.getSwatches();
 

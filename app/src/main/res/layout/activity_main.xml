@@ -17,23 +17,24 @@
             android:id="@+id/selectView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="select image" />
+            android:text="选择图片" />
 
         <Button
             android:id="@+id/saveImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="save img" />
+            android:text="保存图片" />
 
     </LinearLayout>
-    <SeekBar
-        android:id="@+id/colorCount"
+
+    <com.z.palettedemo.view.ColorSeekBar
+        android:id="@+id/colorSeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="2dp"
         android:max="10"
-        android:progress="6"
-        />
+        android:maxHeight="2dp"
+        android:progress="6" />
+
 
     <ImageView
         android:id="@+id/imageCard"
