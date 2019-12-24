@@ -34,8 +34,8 @@ public class ThemeDesignActivity extends AppCompatActivity {
     private void initAdapter() {
 
         recyclerView = findViewById(R.id.recyclerViewTheme);
-     //   recyclerView.setLayoutManager(new GridLayoutManager(this,1));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+       recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+      //  recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         stringList.add("header");

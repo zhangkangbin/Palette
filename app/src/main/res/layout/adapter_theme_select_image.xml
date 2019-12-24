@@ -8,9 +8,10 @@
     tools:context=".ThemeDesignActivity">
 
     <com.z.palettedemo.view.ZImageView
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bar_grey_90"
+        android:background="@drawable/bg_red"
         android:scaleType="centerCrop"
         android:id="@+id/image"
         />

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".ThemeDesignActivity">
 
@@ -27,6 +27,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:textColor="@color/theme_color_69"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -51,10 +52,11 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/theme_color_69"
                 android:layout_margin="10dp"
                 android:background="@drawable/bg_red"
                 android:hint="说点什么呢？"
-                android:minHeight="100dp"
+                android:minHeight="50dp"
                 android:padding="10dp"
                 android:text="@string/theme_style"
                 android:textSize="14dp" />
@@ -75,28 +77,46 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="@drawable/bg_red"
+                android:textColor="@color/theme_color_69"
                 android:hint="说点什么呢？"
                 android:minHeight="50dp"
                 android:padding="10dp"
                 android:text="@string/theme_colors"
                 android:textSize="14dp" />
 
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
+                android:text="[ 服装搭配 ]"
+                android:textColor="@color/themeTitleColor"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_red"
+                android:textColor="@color/theme_color_69"
+                android:hint="说点什么呢？"
+                android:minHeight="50dp"
+                android:padding="10dp"
+                android:text="@string/theme_clothes"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/themeImageReference"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
                 android:text="[ 图片参考 ]"
                 android:textColor="@color/themeTitleColor"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/themeImageReference"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="选择参考图片" />
 
         </LinearLayout>
     </ScrollView>

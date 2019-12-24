@@ -63,7 +63,7 @@ public class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.View
 
     }
 
-/*    @Override
+   @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
@@ -84,7 +84,7 @@ public class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.View
             });
         }
 
-    }*/
+    }
 
     @Override
     public void onBindViewHolder(@NonNull ThemeListAdapter.ViewHolder viewHolder, int i) {
