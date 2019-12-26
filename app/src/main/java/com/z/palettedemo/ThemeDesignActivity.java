@@ -25,6 +25,10 @@ public class ThemeDesignActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme_design2);
+
+
+        setTitle("主题卡");
+
         initAdapter();
     }
 
@@ -52,6 +56,7 @@ public class ThemeDesignActivity extends AppCompatActivity {
                 .openGallery(PictureMimeType.ofImage())
                 .maxSelectNum(9)
                 .compress(true)
+             //   .enableCrop(true)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
