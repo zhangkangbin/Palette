@@ -1,16 +1,22 @@
 package com.z.palettedemo.adapter
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.z.palettedemo.R
+import com.z.palettedemo.constant.Constant
 
 
 /**
@@ -24,10 +30,18 @@ class ThemeDesignAdapter(private val imageList: List<String>) : RecyclerView.Ada
     private var mContext: Context? = null
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-         var mImageView: ImageView ?
+        var mImageView: ImageView?
+        var edtTheme: EditText?
+        var edtStyle: EditText?
+        var edtStyleColors: EditText?
+        var edtClothes: EditText?
 
         init {
             mImageView = view.findViewById(R.id.image)
+            edtTheme = view.findViewById(R.id.edtTheme)
+            edtStyle = view.findViewById(R.id.edtStyle)
+            edtStyleColors = view.findViewById(R.id.edtStyleColors)
+            edtClothes = view.findViewById(R.id.edtClothes)
         }
 
     }
@@ -40,19 +54,68 @@ class ThemeDesignAdapter(private val imageList: List<String>) : RecyclerView.Ada
         } else {
 
 
-        /*    val view = LayoutInflater.from(mContext).inflate(R.layout.head_theme_list, parent, false)
-            view.findViewById<TextView>(R.id.themeImageReference).setOnClickListener {
-                mSelectImageListener?.onClick(it)
-            }
-*/
-            val view  = LayoutInflater.from(mContext).inflate(R.layout.head_theme_list, parent, false)
+            /*    val view = LayoutInflater.from(mContext).inflate(R.layout.head_theme_list, parent, false)
+                view.findViewById<TextView>(R.id.themeImageReference).setOnClickListener {
+                    mSelectImageListener?.onClick(it)
+                }
+    */
+            val view = LayoutInflater.from(mContext).inflate(R.layout.head_theme_list, parent, false)
             view.findViewById<TextView>(R.id.themeImageReference).setOnClickListener { v: View? ->
                 mSelectImageListener?.onClick(v)
             }
-
-            return ViewHolder(view)
+            var holder = ViewHolder(view)
+            initEditText(holder)
+            return holder
         }
 
+
+    }
+
+    var mPreferences: SharedPreferences? = null
+    private fun initEditText(holder: ViewHolder) {
+/*
+       var theme=holder.edtTheme?.text
+       var style=holder.edtStyle?.text
+       var clothes=holder.edtClothes?.text
+       var styleColors=holder.edtStyleColors?.text
+*/
+
+        holder.edtTheme?.addTextChangedListener(ThemeTextWatcher(Constant.THEME_SAVE_TYPE_THEME))
+        holder.edtStyle?.addTextChangedListener(ThemeTextWatcher(Constant.THEME_SAVE_TYPE_STYLE))
+        holder.edtClothes?.addTextChangedListener(ThemeTextWatcher(Constant.THEME_SAVE_TYPE_CLOTHES))
+        holder.edtStyleColors?.addTextChangedListener(ThemeTextWatcher(Constant.THEME_SAVE_TYPE_STYLECOLORS))
+
+        mPreferences = mContext?.getSharedPreferences("theme_config", Context.MODE_PRIVATE)
+
+        val theme = mPreferences?.getString(Constant.THEME_SAVE_TYPE_THEME, "")
+        val style = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLE, "")
+        val clothes = mPreferences?.getString(Constant.THEME_SAVE_TYPE_CLOTHES, "")
+        val styleColors = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLECOLORS, "")
+
+        holder.edtTheme?.setText(theme)
+        holder.edtStyle?.setText(style)
+        holder.edtClothes?.setText(clothes)
+        holder.edtStyleColors?.setText(styleColors)
+
+
+    }
+
+
+    inner class ThemeTextWatcher(private val saveType: String) : TextWatcher {
+
+        override fun afterTextChanged(s: Editable?) {
+            val edit = mPreferences?.edit()
+            edit?.putString(saveType, s.toString())
+            edit?.apply()
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        }
 
     }
 
@@ -91,13 +154,14 @@ class ThemeDesignAdapter(private val imageList: List<String>) : RecyclerView.Ada
 
         return imageList.size
     }
+
     fun setSelectImage(selectImage: View.OnClickListener?) {
         this.mSelectImageListener = selectImage
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (position != 0) {
-         //   Glide.with(mContext).load(imageList.get(position)).into(holder.mImageView)
+            //   Glide.with(mContext).load(imageList.get(position)).into(holder.mImageView)
             Glide.with(mContext!!).load(imageList[position]).into(holder.mImageView!!)
         }
 
