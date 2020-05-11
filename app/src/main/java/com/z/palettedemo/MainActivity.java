@@ -37,6 +37,9 @@ import java.util.Date;
 import java.util.List;
 
 
+/**
+ * @author zhangkb
+ */
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
@@ -107,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveImage() {
+        if(imageFile==null) return;
+
         File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), new Date().toString() + imageFile.getName());
         if (!newFile.exists()) {
             try {

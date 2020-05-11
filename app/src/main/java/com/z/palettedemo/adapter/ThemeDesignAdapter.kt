@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
@@ -26,66 +25,46 @@ import com.z.palettedemo.constant.Constant
  */
 class ThemeDesignAdapter(private val imageList: List<String>) : RecyclerView.Adapter<ThemeDesignAdapter.ViewHolder>() {
 
-
+    private var mSelectImageListener: View.OnClickListener? = null
+    private var mPreferences: SharedPreferences? = null
     private var mContext: Context? = null
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var mImageView: ImageView?
-        var edtTheme: EditText?
-        var edtStyle: EditText?
-        var edtStyleColors: EditText?
-        var edtClothes: EditText?
 
-        init {
-            mImageView = view.findViewById(R.id.image)
-            edtTheme = view.findViewById(R.id.edtTheme)
-            edtStyle = view.findViewById(R.id.edtStyle)
-            edtStyleColors = view.findViewById(R.id.edtStyleColors)
-            edtClothes = view.findViewById(R.id.edtClothes)
-        }
+        var edtTheme: EditText? = view.findViewById(R.id.edtTheme)
+        var edtStyle: EditText? = view.findViewById(R.id.edtStyle)
+        var edtStyleColors: EditText? = view.findViewById(R.id.edtStyleColors)
+        var edtClothes: EditText? = view.findViewById(R.id.edtClothes)
+        var imageView: ImageView? = view.findViewById(R.id.image)
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         mContext = parent.context
-        if (viewType == 0) {
-
-            return ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.adapter_theme_select_image, parent, false))
+        return if (viewType == 0) {
+            ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.adapter_theme_select_image, parent, false))
         } else {
 
-
-            /*    val view = LayoutInflater.from(mContext).inflate(R.layout.head_theme_list, parent, false)
-                view.findViewById<TextView>(R.id.themeImageReference).setOnClickListener {
-                    mSelectImageListener?.onClick(it)
-                }
-    */
             val view = LayoutInflater.from(mContext).inflate(R.layout.head_theme_list, parent, false)
             view.findViewById<TextView>(R.id.themeImageReference).setOnClickListener { v: View? ->
                 mSelectImageListener?.onClick(v)
             }
-            var holder = ViewHolder(view)
+            val holder = ViewHolder(view)
             initEditText(holder)
-            return holder
+            holder
         }
 
 
     }
 
-    var mPreferences: SharedPreferences? = null
     private fun initEditText(holder: ViewHolder) {
-/*
-       var theme=holder.edtTheme?.text
-       var style=holder.edtStyle?.text
-       var clothes=holder.edtClothes?.text
-       var styleColors=holder.edtStyleColors?.text
-*/
 
         holder.edtTheme?.addTextChangedListener(ThemeTextWatcher(Constant.THEME_SAVE_TYPE_THEME))
         holder.edtStyle?.addTextChangedListener(ThemeTextWatcher(Constant.THEME_SAVE_TYPE_STYLE))
         holder.edtClothes?.addTextChangedListener(ThemeTextWatcher(Constant.THEME_SAVE_TYPE_CLOTHES))
         holder.edtStyleColors?.addTextChangedListener(ThemeTextWatcher(Constant.THEME_SAVE_TYPE_STYLECOLORS))
 
-        mPreferences = mContext?.getSharedPreferences("theme_config", Context.MODE_PRIVATE)
+        mPreferences = mContext?.getSharedPreferences(Constant.SAVE_THEME_TEMP, Context.MODE_PRIVATE)
 
         val theme = mPreferences?.getString(Constant.THEME_SAVE_TYPE_THEME, "")
         val style = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLE, "")
@@ -118,8 +97,6 @@ class ThemeDesignAdapter(private val imageList: List<String>) : RecyclerView.Ada
         }
 
     }
-
-    private var mSelectImageListener: View.OnClickListener? = null
 
 
     override fun getItemViewType(position: Int): Int {
@@ -162,7 +139,7 @@ class ThemeDesignAdapter(private val imageList: List<String>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (position != 0) {
             //   Glide.with(mContext).load(imageList.get(position)).into(holder.mImageView)
-            Glide.with(mContext!!).load(imageList[position]).into(holder.mImageView!!)
+            Glide.with(mContext!!).load(imageList[position]).into(holder.imageView!!)
         }
 
     }

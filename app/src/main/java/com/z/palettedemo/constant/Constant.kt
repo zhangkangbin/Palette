@@ -8,7 +8,7 @@ package com.z.palettedemo.constant
 class Constant {
 
     companion object {
-        const  val SAVE_EDIT="save_project_temp_edit"
+        const  val SAVE_THEME_TEMP="save_project_temp_config"
         const  val THEME_SAVE_TYPE_THEME="theme_save_type_theme"
         const  val THEME_SAVE_TYPE_STYLE="theme_save_type_style"
         const  val THEME_SAVE_TYPE_CLOTHES="theme_save_type_clothes"
