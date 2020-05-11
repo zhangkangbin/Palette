@@ -19,7 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ThemeDesignActivity extends AppCompatActivity {
+/**
+ * @author zhangkangbin
+ */
+public class ThemeDesignActivityss extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

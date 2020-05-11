@@ -11,9 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 
@@ -27,12 +25,14 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.z.palettedemo.adapter.PaletteColorsBean;
 import com.z.palettedemo.adapter.RecyclerViewAdapter;
 import com.z.palettedemo.view.ColorSeekBar;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -190,17 +190,23 @@ public class MainActivity extends AppCompatActivity {
                 if (palette.getSwatches().isEmpty()) return;
 
                 List<Palette.Swatch> swatchList = palette.getSwatches();
+                List<PaletteColorsBean> paletteColorsBeans=new ArrayList<>();
+                for(Palette.Swatch color :swatchList){
+                    paletteColorsBeans.add(new PaletteColorsBean(color,color.getRgb()+""));
+                }
 
-                recyclerView.setAdapter(new RecyclerViewAdapter(swatchList));
                 mergeColor(swatchList);
                 Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();//获取有活力的颜色样本
                 if (vibrantSwatch != null) {
+                    paletteColorsBeans.add(new PaletteColorsBean(vibrantSwatch,"活力的颜色样本"));
                     Log.d("test", "活力的颜色样本:" + vibrantSwatch.getTitleTextColor());
                 }
                 Palette.Swatch drakVibrantSwatch = palette.getDarkVibrantSwatch();//获取有活力 暗色的样本
 
                 if (drakVibrantSwatch != null) {
                     Log.d("test", "有活力暗色的样本:" + drakVibrantSwatch.getTitleTextColor());
+
+                    paletteColorsBeans.add(new PaletteColorsBean(drakVibrantSwatch,"有活力暗色的样本"));
                 }
 
 
@@ -208,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mutedSwatch != null) {
                     Log.d("test", "柔和的颜色样本:" + mutedSwatch.getRgb());
+                    paletteColorsBeans.add(new PaletteColorsBean(mutedSwatch,"柔和的颜色样本"));
                 }
 
 
@@ -215,6 +222,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (lightMutedSwatch != null) {
                     Log.d("test", "柔和的亮色颜色样本:" + lightMutedSwatch.getRgb());
+
+                    paletteColorsBeans.add(new PaletteColorsBean(lightMutedSwatch,"柔和的亮色颜色样本"));
                 }
 
 
@@ -222,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (darkMutedSwatch != null) {
                     Log.d("test", "柔和暗色颜色样本:" + darkMutedSwatch.getRgb());
+
+                    paletteColorsBeans.add(new PaletteColorsBean(darkMutedSwatch,"柔和暗色颜色样本1"+darkMutedSwatch.getTitleTextColor()));
                 }
  /*               Palette.Swatch lightVibrantSwatch = palette.getLightVibrantSwatch();//获取有活力 亮色的样本
                 view2.setBackgroundColor(lightVibrantSwatch.getRgb());
@@ -234,6 +245,9 @@ public class MainActivity extends AppCompatActivity {
                 view5.setBackgroundColor(lightMutedSwatch.getRgb());*/
                 //  Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();//获取柔和 暗色的样本
                 //  view1.setBackgroundColor(darkMutedSwatch.getRgb());
+
+
+                recyclerView.setAdapter(new RecyclerViewAdapter(paletteColorsBeans));
             }
         });
 

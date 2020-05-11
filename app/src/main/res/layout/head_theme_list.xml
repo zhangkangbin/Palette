@@ -27,6 +27,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/edtTheme"
                 android:textColor="@color/theme_color_69"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,6 +51,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/edtStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/theme_color_69"
@@ -73,6 +75,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/edtStyleColors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -95,6 +98,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/edtClothes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
