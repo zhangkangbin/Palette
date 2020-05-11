@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.z.palettedemo.R
+import com.z.palettedemo.bean.ThemeDataSaveBean
 import com.z.palettedemo.constant.Constant
 
 
@@ -56,6 +57,10 @@ class ThemeDesignAdapter(private val imageList: List<String>) : RecyclerView.Ada
 
 
     }
+    private var mTheme :String?=null
+    private var mStyle :String?=null
+    private var mClothes:String?=null
+    private var mStyleColors :String?=null
 
     private fun initEditText(holder: ViewHolder) {
 
@@ -66,15 +71,15 @@ class ThemeDesignAdapter(private val imageList: List<String>) : RecyclerView.Ada
 
         mPreferences = mContext?.getSharedPreferences(Constant.SAVE_THEME_TEMP, Context.MODE_PRIVATE)
 
-        val theme = mPreferences?.getString(Constant.THEME_SAVE_TYPE_THEME, "")
-        val style = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLE, "")
-        val clothes = mPreferences?.getString(Constant.THEME_SAVE_TYPE_CLOTHES, "")
-        val styleColors = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLECOLORS, "")
+        mTheme = mPreferences?.getString(Constant.THEME_SAVE_TYPE_THEME, "")
+        mStyle = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLE, "")
+        mClothes = mPreferences?.getString(Constant.THEME_SAVE_TYPE_CLOTHES, "")
+        mStyleColors = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLECOLORS, "")
 
-        holder.edtTheme?.setText(theme)
-        holder.edtStyle?.setText(style)
-        holder.edtClothes?.setText(clothes)
-        holder.edtStyleColors?.setText(styleColors)
+        holder.edtTheme?.setText(mTheme)
+        holder.edtStyle?.setText(mStyle)
+        holder.edtClothes?.setText(mClothes)
+        holder.edtStyleColors?.setText(mStyleColors)
 
 
     }
@@ -83,9 +88,27 @@ class ThemeDesignAdapter(private val imageList: List<String>) : RecyclerView.Ada
     inner class ThemeTextWatcher(private val saveType: String) : TextWatcher {
 
         override fun afterTextChanged(s: Editable?) {
+
+            when(saveType){
+                Constant.THEME_SAVE_TYPE_THEME->{
+                    mTheme=s.toString()
+                }
+                Constant.THEME_SAVE_TYPE_STYLE->{
+                    mStyle=s.toString()
+                }
+                Constant.THEME_SAVE_TYPE_CLOTHES->{
+                    mClothes=s.toString()
+                }
+                Constant.THEME_SAVE_TYPE_STYLECOLORS->{
+                    mStyleColors=s.toString()
+                }
+
+            }
+
             val edit = mPreferences?.edit()
             edit?.putString(saveType, s.toString())
             edit?.apply()
+
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -141,6 +164,12 @@ class ThemeDesignAdapter(private val imageList: List<String>) : RecyclerView.Ada
             //   Glide.with(mContext).load(imageList.get(position)).into(holder.mImageView)
             Glide.with(mContext!!).load(imageList[position]).into(holder.imageView!!)
         }
+
+    }
+
+    fun saveTheme() {
+
+        val data=ThemeDataSaveBean(theme=mTheme,style=mStyle,clothes=mClothes,styleColors=mStyleColors,imagePathList=imageList)
 
     }
 }

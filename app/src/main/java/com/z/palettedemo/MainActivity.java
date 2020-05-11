@@ -75,8 +75,9 @@ public class MainActivity extends AppCompatActivity {
             Bitmap newBmp = BitmapUtils.newBitmap(bitmap1, bitmap2);
 
             File zhangphil = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "zhangphil.jpg");
-            if (!zhangphil.exists())
+            if (!zhangphil.exists()) {
                 zhangphil.createNewFile();
+            }
             BitmapUtils.save(newBmp, zhangphil, Bitmap.CompressFormat.JPEG, true);
             // Toast.makeText(this, "成功", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
@@ -91,7 +92,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void mergeColor(List<Palette.Swatch> swatches) {
 
-        if (imagePath == null) return;
+        if (imagePath == null) {
+            return;
+        }
 
         imageFile = new File(imagePath);
 
@@ -110,7 +113,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveImage() {
-        if(imageFile==null) return;
+        if(imageFile==null) {
+            return;
+        }
 
         File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), new Date().toString() + imageFile.getName());
         if (!newFile.exists()) {
@@ -191,8 +196,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGenerated(Palette palette) {
 
-                if (palette == null) return;
-                if (palette.getSwatches().isEmpty()) return;
+                if (palette == null) {
+                    return;
+                }
+                if (palette.getSwatches().isEmpty()) {
+                    return;
+                }
 
                 List<Palette.Swatch> swatchList = palette.getSwatches();
                 List<PaletteColorsBean> paletteColorsBeans=new ArrayList<>();
@@ -272,8 +281,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK) {
-            if (requestCode == PictureConfig.CHOOSE_REQUEST) {// 图片、视频、音频选择结果回调
+            // 图片、视频、音频选择结果回调
+            if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
                 // 例如 LocalMedia 里面返回四种path
                 // 1.media.getPath(); 为原图path
