@@ -9,6 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.themeDesign).setOnClickListener(v -> startActivity(new Intent(this, ThemeDesignActivity.class)));
         findViewById(R.id.themeDesignList).setOnClickListener(v -> startActivity(new Intent(this, ThemeDesignListActivity.class)));
+
+
     }
 
 
