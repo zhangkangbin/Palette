@@ -30,6 +30,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="主题设计" />
+        <Button
+            android:id="@+id/themeDesignList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="主题列表" />
     </LinearLayout>
 
     <TextView

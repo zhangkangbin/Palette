@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         colorSeekBar = findViewById(R.id.colorSeekBar);
 
         findViewById(R.id.themeDesign).setOnClickListener(v -> startActivity(new Intent(this, ThemeDesignActivity.class)));
+        findViewById(R.id.themeDesignList).setOnClickListener(v -> startActivity(new Intent(this, ThemeDesignListActivity.class)));
     }
 
 

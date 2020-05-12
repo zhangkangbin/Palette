@@ -13,5 +13,6 @@ class Constant {
         const  val THEME_SAVE_TYPE_STYLE="theme_save_type_style"
         const  val THEME_SAVE_TYPE_CLOTHES="theme_save_type_clothes"
         const  val THEME_SAVE_TYPE_STYLECOLORS="theme_save_type_colors"
+        const  val THEME_LOCAL_LIST="theme_local_list"
     }
 }

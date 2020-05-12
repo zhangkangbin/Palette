@@ -5,16 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ThemeDesignActivity">
+    tools:context=".ThemeDesignListActivity">
 
-    <Button
-        android:text="Save Theme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnSaveTheme"
-        />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewTheme"
+        android:id="@+id/recyclerViewLocalTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

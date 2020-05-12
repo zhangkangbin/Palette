@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.z.palettedemo.adapter.ThemeDesignAdapter
+import com.z.palettedemo.bean.ThemeDataSaveBean
 
 /**
  * @author by zhangkangbin
@@ -33,11 +35,13 @@ class ThemeDesignActivity : AppCompatActivity() {
     private var stringList: MutableList<String> = ArrayList()
     private fun  initAdapter(){
 
+       val data= intent.getSerializableExtra(ThemeDataSaveBean::class.qualifiedName) as ThemeDataSaveBean ?
+
         recyclerView=findViewById(R.id.recyclerViewTheme)
         recyclerView.layoutManager=GridLayoutManager(this,2)
         stringList.add("header")
 
-        val themeListAdapter= ThemeDesignAdapter(stringList)
+        val themeListAdapter= ThemeDesignAdapter(stringList,data)
         themeListAdapter.setSelectImage(View.OnClickListener {
 
             selectImage()
@@ -47,7 +51,12 @@ class ThemeDesignActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnSaveTheme).setOnClickListener {
 
-            themeListAdapter.saveTheme()
+            //保存
+            if (themeListAdapter.saveTheme()){
+                Toast.makeText(this,"saved  successfully ",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this,"saved  fail ",Toast.LENGTH_SHORT).show()
+            }
         }
 
     }

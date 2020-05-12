@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ThemeDesignActivity">
+    tools:context=".ThemeDesignListActivity">
 
-    <Button
-        android:text="Save Theme"
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnSaveTheme"
+        android:minHeight="60dp"
+        android:id="@+id/image"
         />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewTheme"
+    <TextView
+        android:id="@+id/text"
+        android:padding="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
