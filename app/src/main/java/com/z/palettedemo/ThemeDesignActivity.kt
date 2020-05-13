@@ -1,6 +1,7 @@
 package com.z.palettedemo
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.z.palettedemo.adapter.ThemeDesignAdapter
 import com.z.palettedemo.bean.ThemeDataSaveBean
+import com.z.palettedemo.constant.Constant
 
 /**
  * @author by zhangkangbin
@@ -32,7 +34,7 @@ class ThemeDesignActivity : AppCompatActivity() {
     }
 
     private lateinit var recyclerView:RecyclerView
-    private var stringList: MutableList<String> = ArrayList()
+    private var stringList: LinkedHashSet<String> = LinkedHashSet()
     private fun  initAdapter(){
 
        val data= intent.getSerializableExtra(ThemeDataSaveBean::class.qualifiedName) as ThemeDataSaveBean ?
@@ -40,6 +42,15 @@ class ThemeDesignActivity : AppCompatActivity() {
         recyclerView=findViewById(R.id.recyclerViewTheme)
         recyclerView.layoutManager=GridLayoutManager(this,2)
         stringList.add("header")
+
+
+
+        val sharedPreferences = this.getSharedPreferences(Constant.SAVE_THEME_TEMP, Context.MODE_PRIVATE);
+        val local=sharedPreferences?.getStringSet(Constant.THEME_SAVE_TYPE_IMAGE, stringList)
+
+        if (local != null) {
+            stringList.addAll(local)
+        }
 
         val themeListAdapter= ThemeDesignAdapter(stringList,data)
         themeListAdapter.setSelectImage(View.OnClickListener {
@@ -68,6 +79,16 @@ class ThemeDesignActivity : AppCompatActivity() {
         }
 
         recyclerView.adapter?.notifyDataSetChanged()
+
+
+
+        if (stringList.isNotEmpty()){
+            val edit = this.getSharedPreferences(Constant.SAVE_THEME_TEMP, Context.MODE_PRIVATE)?.edit()
+            edit?.putStringSet(Constant.THEME_SAVE_TYPE_IMAGE, stringList)
+            edit?.apply()
+        }
+
+
     }
 
     private fun selectImage() {

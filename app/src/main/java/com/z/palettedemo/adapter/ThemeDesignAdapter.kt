@@ -19,6 +19,7 @@ import com.z.palettedemo.bean.ThemeDataSaveBean
 import com.z.palettedemo.constant.Constant
 import java.io.File
 import java.io.ObjectOutputStream
+import java.util.*
 
 
 /**
@@ -26,7 +27,7 @@ import java.io.ObjectOutputStream
  * on 2020/5/11
  * 界面说明
  */
-class ThemeDesignAdapter(private val imageList: List<String>,private var themeDataSaveBean:ThemeDataSaveBean?) : RecyclerView.Adapter<ThemeDesignAdapter.ViewHolder>() {
+class ThemeDesignAdapter(private val imageList: Set<String>,private var themeDataSaveBean:ThemeDataSaveBean?) : RecyclerView.Adapter<ThemeDesignAdapter.ViewHolder>() {
 
     private var mSelectImageListener: View.OnClickListener? = null
     private var mPreferences: SharedPreferences? = null
@@ -54,6 +55,7 @@ class ThemeDesignAdapter(private val imageList: List<String>,private var themeDa
             }
             val holder = ViewHolder(view)
             initEditText(holder)
+
             holder
         }
 
@@ -79,11 +81,14 @@ class ThemeDesignAdapter(private val imageList: List<String>,private var themeDa
             mStyle = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLE, "")
             mClothes = mPreferences?.getString(Constant.THEME_SAVE_TYPE_CLOTHES, "")
             mStyleColors = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLECOLORS, "")
+          //  mStyleColors = mPreferences?.get(Constant.THEME_SAVE_TYPE_IMAGE, "")
 
             holder.edtTheme?.setText(mTheme)
             holder.edtStyle?.setText(mStyle)
             holder.edtClothes?.setText(mClothes)
             holder.edtStyleColors?.setText(mStyleColors)
+
+
 
         }else{
             holder.edtTheme?.setText(themeDataSaveBean?.theme)
@@ -91,8 +96,6 @@ class ThemeDesignAdapter(private val imageList: List<String>,private var themeDa
             holder.edtClothes?.setText(themeDataSaveBean?.clothes)
             holder.edtStyleColors?.setText(themeDataSaveBean?.styleColors)
         }
-
-
 
     }
 
@@ -174,14 +177,14 @@ class ThemeDesignAdapter(private val imageList: List<String>,private var themeDa
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (position != 0) {
             //   Glide.with(mContext).load(imageList.get(position)).into(holder.mImageView)
-            Glide.with(mContext!!).load(imageList[position]).into(holder.imageView!!)
+            Glide.with(mContext!!).load(imageList.elementAt(position)).into(holder.imageView!!)
         }
 
     }
 
     fun saveTheme(): Boolean {
 
-        val data = ThemeDataSaveBean(theme = mTheme, style = mStyle, clothes = mClothes, styleColors = mStyleColors, imagePathList = imageList)
+        val data = ThemeDataSaveBean(theme = mTheme, style = mStyle, clothes = mClothes, date = Date().toString(),styleColors = mStyleColors, imagePathList = imageList)
         val time = System.nanoTime()
         val path = mContext?.cacheDir?.absolutePath + "/${mTheme}${time}.theme"
         val createFile = File(path)
