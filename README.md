@@ -1,2 +1,2 @@
-# PaletteDemo
+# Palette
 ## 调色卡
