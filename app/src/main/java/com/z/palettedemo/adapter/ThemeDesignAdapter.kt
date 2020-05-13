@@ -20,6 +20,7 @@ import com.z.palettedemo.constant.Constant
 import java.io.File
 import java.io.ObjectOutputStream
 import java.util.*
+import kotlin.collections.LinkedHashSet
 
 
 /**
@@ -27,7 +28,7 @@ import java.util.*
  * on 2020/5/11
  * 界面说明
  */
-class ThemeDesignAdapter(private val imageList: Set<String>,private var themeDataSaveBean:ThemeDataSaveBean?) : RecyclerView.Adapter<ThemeDesignAdapter.ViewHolder>() {
+class ThemeDesignAdapter(private var imageList: LinkedHashSet<String>,private var themeDataSaveBean:ThemeDataSaveBean?) : RecyclerView.Adapter<ThemeDesignAdapter.ViewHolder>() {
 
     private var mSelectImageListener: View.OnClickListener? = null
     private var mPreferences: SharedPreferences? = null
@@ -90,11 +91,14 @@ class ThemeDesignAdapter(private val imageList: Set<String>,private var themeDat
 
 
 
+
         }else{
             holder.edtTheme?.setText(themeDataSaveBean?.theme)
             holder.edtStyle?.setText(themeDataSaveBean?.style)
             holder.edtClothes?.setText(themeDataSaveBean?.clothes)
             holder.edtStyleColors?.setText(themeDataSaveBean?.styleColors)
+
+            imageList= themeDataSaveBean?.imagePathList as LinkedHashSet<String>
         }
 
     }
@@ -178,8 +182,23 @@ class ThemeDesignAdapter(private val imageList: Set<String>,private var themeDat
         if (position != 0) {
             //   Glide.with(mContext).load(imageList.get(position)).into(holder.mImageView)
             Glide.with(mContext!!).load(imageList.elementAt(position)).into(holder.imageView!!)
+            holder.imageView!!.setOnLongClickListener {
+                imageList.remove(imageList.elementAt(position))
+                notifyDataSetChanged()
+                saveImages()
+                true
+            }
+
+
         }
 
+    }
+
+    fun saveImages(){
+
+        val edit = mPreferences?.edit()
+        edit?.putStringSet(Constant.THEME_SAVE_TYPE_IMAGE, imageList)
+        edit?.apply()
     }
 
     fun saveTheme(): Boolean {
