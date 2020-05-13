@@ -4,4 +4,7 @@
     <string name="theme_style">自然的丶柔和的丶慵懒的丶小资的</string>
     <string name="theme_colors">高调的，柔和的，温暖的，都市小资感的配色</string>
     <string name="theme_clothes">不宜运动风，宜小西装..文艺范....</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
