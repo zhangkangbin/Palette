@@ -174,6 +174,9 @@ class ThemeDesignAdapter(private var imageList: LinkedHashSet<String>,private va
         return imageList.size
     }
 
+    /**
+     *
+     */
     fun setSelectImage(selectImage: View.OnClickListener?) {
         this.mSelectImageListener = selectImage
     }
@@ -194,13 +197,16 @@ class ThemeDesignAdapter(private var imageList: LinkedHashSet<String>,private va
 
     }
 
-    fun saveImages(){
+    private fun saveImages(){
 
         val edit = mPreferences?.edit()
         edit?.putStringSet(Constant.THEME_SAVE_TYPE_IMAGE, imageList)
         edit?.apply()
     }
 
+    /**
+     * save theme
+     */
     fun saveTheme(): Boolean {
 
         val data = ThemeDataSaveBean(theme = mTheme, style = mStyle, clothes = mClothes, date = Date().toString(),styleColors = mStyleColors, imagePathList = imageList)

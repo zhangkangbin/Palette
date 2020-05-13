@@ -2,7 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -11,19 +12,41 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        flavorDimensions "default"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         androidExtensions { experimental = true }
+    }
+
+    signingConfigs {
+        def appKeyPassword = properties.getProperty('keyPassword')
+        def appStorePassword = properties.getProperty('storePassword')
+        config {
+
+            keyAlias 'palette'
+            keyPassword appKeyPassword
+            storeFile file('../palette.jks')
+            storePassword appStorePassword
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+
+
+    productFlavors {
+
+    }
+
+
 }
 
 dependencies {
