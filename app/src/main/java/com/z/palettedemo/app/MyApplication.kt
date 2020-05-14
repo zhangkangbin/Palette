@@ -12,6 +12,6 @@ class MyApplication :Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Bugly.init(getApplicationContext(), AppKey.BUGLY_KEY_ID, false)
+        Bugly.init(this, AppKey.BUGLY_KEY_ID, true)
     }
 }

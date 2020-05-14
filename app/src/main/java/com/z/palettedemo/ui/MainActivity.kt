@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.PersistableBundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -23,8 +22,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
+import com.tencent.bugly.beta.Beta
 import com.z.palettedemo.BitmapUtils
 import com.z.palettedemo.R
+import com.z.palettedemo.ThemeDesignActivity
+import com.z.palettedemo.ThemeDesignListActivity
 import com.z.palettedemo.adapter.PaletteColorsBean
 import com.z.palettedemo.adapter.RecyclerViewAdapter
 import com.z.palettedemo.view.ColorSeekBar
@@ -69,6 +71,14 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.saveImage).setOnClickListener {
             saveImage()
         }
+
+
+        findViewById<View>(R.id.themeDesign).setOnClickListener { v: View? ->
+            startActivity(Intent(this, ThemeDesignActivity::class.java)) }
+        findViewById<View>(R.id.themeDesignList).setOnClickListener { v: View? ->
+            startActivity(Intent(this, ThemeDesignListActivity::class.java)) }
+
+        Beta.checkUpgrade()
     }
 
     private fun selectImage() {
