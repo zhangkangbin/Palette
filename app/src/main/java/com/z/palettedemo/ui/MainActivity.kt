@@ -30,6 +30,7 @@ import com.z.palettedemo.ThemeDesignListActivity
 import com.z.palettedemo.adapter.PaletteColorsBean
 import com.z.palettedemo.adapter.RecyclerViewAdapter
 import com.z.palettedemo.bean.ThemeColorsDataBean
+import com.z.palettedemo.tool.ThemeUtils
 import com.z.palettedemo.view.ColorSeekBar
 import java.io.File
 import java.io.FileInputStream
@@ -173,7 +174,7 @@ class MainActivity : AppCompatActivity() {
             for (color in swatchList) {
 
                 //  paletteColorsBeans.add(PaletteColorsBean(color, "#"+getRgb(color.rgb) + "+color:"+color.hsl.toString()))
-                paletteColorsBeans.add(PaletteColorsBean(color, getRgb(color.rgb)))
+                paletteColorsBeans.add(PaletteColorsBean(color, ThemeUtils.getRgb(color.rgb)))
                 colorsList.add(color.rgb)
             }
 
@@ -208,32 +209,11 @@ class MainActivity : AppCompatActivity() {
                 Log.d("test", "柔和暗色颜色样本:" + darkMutedSwatch.rgb)
                 paletteColorsBeans.add(PaletteColorsBean(darkMutedSwatch, "柔和暗色颜色样本1" + darkMutedSwatch.titleTextColor))
             }
-            /*               Palette.Swatch lightVibrantSwatch = palette.getLightVibrantSwatch();//获取有活力 亮色的样本
-                view2.setBackgroundColor(lightVibrantSwatch.getRgb());
 
-                Palette.Swatch drakVibrantSwatch = palette.getDarkVibrantSwatch();//获取有活力 暗色的样本
-                view3.setBackgroundColor(drakVibrantSwatch.getRgb());
-                Palette.Swatch mutedSwatch = palette.getMutedSwatch();//获取柔和的颜色样本
-                view4.setBackgroundColor(mutedSwatch.getRgb());
-                Palette.Swatch lightMutedSwatch = palette.getLightMutedSwatch();//获取柔和 亮色的样本
-                view5.setBackgroundColor(lightMutedSwatch.getRgb());*/
-            //  Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();//获取柔和 暗色的样本
-            //  view1.setBackgroundColor(darkMutedSwatch.getRgb());
             mRecyclerView.setAdapter(RecyclerViewAdapter(paletteColorsBeans))
         })
     }
 
-
-    private fun getRgb(color: Int): String {
-        val red: Int = color and 0xff0000 shr 16
-        val green: Int = color and 0x00ff00 shr 8
-        val blue: Int = color and 0x0000ff
-        val hr = Integer.toHexString(red)
-        val hg = Integer.toHexString(green)
-        val hb = Integer.toHexString(blue)
-
-        return "#$hr$hg$hb"
-    }
 
     private fun mergeColor(swatches: List<Swatch>) {
         if (imagePath == null) {

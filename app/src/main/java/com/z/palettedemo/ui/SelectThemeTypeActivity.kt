@@ -2,10 +2,11 @@ package com.z.palettedemo.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import com.z.palettedemo.BaseViewPagerAdapter
 import com.z.palettedemo.R
-import com.z.palettedemo.adapter.PaletteColorsBean
-import com.z.palettedemo.bean.ThemeColorsDataBean
-import com.z.palettedemo.view.MyView
+
 
 class SelectThemeTypeActivity : AppCompatActivity() {
 
@@ -13,9 +14,23 @@ class SelectThemeTypeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_theme_type)
 
-        val myView = findViewById<MyView>(R.id.myView)
+        initView()
+
+  /*      val myView = findViewById<MyView>(R.id.myView)
 
         val data = intent.getSerializableExtra("data") as ArrayList<Int>
-        myView.setPaletteColors(data)
+        myView.setPaletteColors(data)*/
+    }
+
+    private fun initView(){
+
+        val listFragment=ArrayList<Fragment>()
+        listFragment.add(ThemeTypeFragment())
+        listFragment.add(ThemeTypeFragment())
+        listFragment.add(ThemeTypeFragment())
+
+        val themeViewPager=findViewById<ViewPager>(R.id.themeViewPager)
+
+        themeViewPager.adapter= BaseViewPagerAdapter(listFragment)
     }
 }
