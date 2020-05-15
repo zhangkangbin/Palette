@@ -29,6 +29,7 @@ import com.z.palettedemo.ThemeDesignActivity
 import com.z.palettedemo.ThemeDesignListActivity
 import com.z.palettedemo.adapter.PaletteColorsBean
 import com.z.palettedemo.adapter.RecyclerViewAdapter
+import com.z.palettedemo.bean.ThemeColorsDataBean
 import com.z.palettedemo.view.ColorSeekBar
 import java.io.File
 import java.io.FileInputStream
@@ -74,9 +75,11 @@ class MainActivity : AppCompatActivity() {
 
 
         findViewById<View>(R.id.themeDesign).setOnClickListener { v: View? ->
-            startActivity(Intent(this, ThemeDesignActivity::class.java)) }
+            startActivity(Intent(this, ThemeDesignActivity::class.java))
+        }
         findViewById<View>(R.id.themeDesignList).setOnClickListener { v: View? ->
-            startActivity(Intent(this, ThemeDesignListActivity::class.java)) }
+            startActivity(Intent(this, ThemeDesignListActivity::class.java))
+        }
 
         Beta.checkUpgrade()
     }
@@ -106,6 +109,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
     private fun getColor() {
         if (TextUtils.isEmpty(imagePath)) {
             return
@@ -165,9 +169,19 @@ class MainActivity : AppCompatActivity() {
             }
             val swatchList = palette.swatches
             val paletteColorsBeans: MutableList<PaletteColorsBean> = ArrayList()
+            val colorsList= ArrayList<Int>()
             for (color in swatchList) {
-                paletteColorsBeans.add(PaletteColorsBean(color, color.rgb.toString() + ""))
+
+                //  paletteColorsBeans.add(PaletteColorsBean(color, "#"+getRgb(color.rgb) + "+color:"+color.hsl.toString()))
+                paletteColorsBeans.add(PaletteColorsBean(color, getRgb(color.rgb)))
+                colorsList.add(color.rgb)
             }
+
+
+ /*           val intent = Intent(this, SelectThemeTypeActivity::class.java)
+            intent.putIntegerArrayListExtra("data",colorsList)
+            startActivity(intent)
+*/
             mergeColor(swatchList)
             val vibrantSwatch = palette.vibrantSwatch //获取有活力的颜色样本
             if (vibrantSwatch != null) {
@@ -209,6 +223,18 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+
+    private fun getRgb(color: Int): String {
+        val red: Int = color and 0xff0000 shr 16
+        val green: Int = color and 0x00ff00 shr 8
+        val blue: Int = color and 0x0000ff
+        val hr = Integer.toHexString(red)
+        val hg = Integer.toHexString(green)
+        val hb = Integer.toHexString(blue)
+
+        return "#$hr$hg$hb"
+    }
+
     private fun mergeColor(swatches: List<Swatch>) {
         if (imagePath == null) {
             return
@@ -216,13 +242,14 @@ class MainActivity : AppCompatActivity() {
         imageFile = File(imagePath)
         try {
             val bitmap1 = BitmapFactory.decodeStream(FileInputStream(imageFile))
-            newBmp = BitmapUtils.newBitmap2(bitmap1, swatches)
+            newBmp = BitmapUtils.drawLeft(bitmap1, swatches)
             mImageCard.setImageBitmap(newBmp)
             Toast.makeText(this, "成功", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {

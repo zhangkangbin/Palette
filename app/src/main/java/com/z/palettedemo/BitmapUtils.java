@@ -18,7 +18,9 @@ import java.util.List;
 
 public class BitmapUtils {
 
-    public static Bitmap newBitmap(Bitmap bmp1, Bitmap bmp2) {
+
+
+    private static Bitmap newBitmap(Bitmap bmp1, Bitmap bmp2) {
         Bitmap retBmp;
 
         int width = bmp1.getWidth();
@@ -50,21 +52,70 @@ public class BitmapUtils {
         return retBmp;
     }
 
-    public static Bitmap newBitmap2(Bitmap bmp, List<Palette.Swatch> swatchList) {
-        Bitmap retBmp;
+   private static int mCardColorScale=20;
+    public enum Draw {
+        left, right, top, bottom
+    }
+    public static Bitmap drawLeft(Bitmap bmp, List<Palette.Swatch> swatchList) {
+
+      return   newBitmap2(bmp,swatchList,Draw.bottom);
+    }
+    public static Bitmap drawRight(Bitmap bmp, List<Palette.Swatch> swatchList) {
+
+        return   newBitmap2(bmp,swatchList,Draw.right);
+    }
+    public static Bitmap newBitmap2(Bitmap bmp, List<Palette.Swatch> swatchList,Draw draw) {
+        Bitmap retBmp = null;
 
         int width = bmp.getWidth();
         int height = bmp.getHeight();
 
-        int colorCardWith = width / 5;
+        int colorCardWith = 0;
 
 
-        retBmp = Bitmap.createBitmap(width + colorCardWith, bmp.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(retBmp);
-        canvas.drawBitmap(bmp, 0, 0, null);
+        Canvas canvas = null;
+
+        switch (draw){
+
+            case left:
+                colorCardWith = width / mCardColorScale;
+                retBmp = Bitmap.createBitmap(width + colorCardWith, bmp.getHeight(), Bitmap.Config.ARGB_8888);
+                canvas = new Canvas(retBmp);
+                canvas.drawBitmap(bmp, colorCardWith, 0, null);
+                width=0;
+                break;
+            case right:
+                colorCardWith = width / mCardColorScale;
+                retBmp = Bitmap.createBitmap(width + colorCardWith, bmp.getHeight(), Bitmap.Config.ARGB_8888);
+                canvas = new Canvas(retBmp);
+                canvas.drawBitmap(bmp, 0, 0, null);
+
+                break;
+            case top:
+                colorCardWith = height / mCardColorScale;
+                retBmp = Bitmap.createBitmap(width , bmp.getHeight()+colorCardWith, Bitmap.Config.ARGB_8888);
+                canvas = new Canvas(retBmp);
+                canvas.drawBitmap(bmp, 0, colorCardWith, null);
+
+                height=0;
+                break;
+            case bottom:
+                colorCardWith = height / mCardColorScale;
+                retBmp = Bitmap.createBitmap(width , bmp.getHeight()+colorCardWith, Bitmap.Config.ARGB_8888);
+                canvas = new Canvas(retBmp);
+                canvas.drawBitmap(bmp, 0, 0, null);
 
 
-        int h = height / swatchList.size();
+                break;
+
+            default:
+
+                break;
+        }
+
+
+
+        int h ;
 
         int jianju = 0;
 
@@ -74,7 +125,16 @@ public class BitmapUtils {
             Palette.Swatch color = swatchList.get(i);
             Paint paint=new Paint();
             paint.setColor(color.getRgb());
-            canvas.drawRect(width,jianju,width+colorCardWith,jianju+h,paint);
+
+            if(draw==Draw.left||Draw.right==draw){
+                h=height / swatchList.size();
+                canvas.drawRect(width,jianju,width+colorCardWith,jianju+h,paint);
+            }else {
+                h=width / swatchList.size();
+                canvas.drawRect(jianju,height,jianju+h,height+colorCardWith,paint);
+            }
+
+          //  canvas.drawRect(0,jianju,colorCardWith,jianju+h,paint);
             jianju=jianju+h;
         }
    /*     for(Palette.Swatch color:swatchList){
@@ -84,7 +144,6 @@ public class BitmapUtils {
             jianju=jianju+h;
         }*/
 
-        Log.d("mytest", "newBitmap2");
 
 
         return retBmp;
@@ -109,18 +168,28 @@ public class BitmapUtils {
      * @return true 成功 false 失败
      */
     public static boolean save(Bitmap src, File file, Bitmap.CompressFormat format, boolean recycle) {
-        if (isEmptyBitmap(src))
+        if (isEmptyBitmap(src)) {
             return false;
+        }
 
-        OutputStream os;
+        OutputStream os=null;
         boolean ret = false;
         try {
             os = new BufferedOutputStream(new FileOutputStream(file));
             ret = src.compress(format, 100, os);
-            if (recycle && !src.isRecycled())
+            if (recycle && !src.isRecycled()) {
                 src.recycle();
+            }
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            if(os!=null){
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return ret;
@@ -129,7 +198,7 @@ public class BitmapUtils {
     /**
      * Bitmap对象是否为空。
      */
-    public static boolean isEmptyBitmap(Bitmap src) {
+    private static boolean isEmptyBitmap(Bitmap src) {
         return src == null || src.getWidth() == 0 || src.getHeight() == 0;
     }
 
