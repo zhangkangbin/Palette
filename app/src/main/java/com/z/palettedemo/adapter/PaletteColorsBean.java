@@ -1,5 +1,7 @@
 package com.z.palettedemo.adapter;
 
+import android.graphics.Bitmap;
+
 import androidx.palette.graphics.Palette;
 
 import java.io.Serializable;
@@ -31,7 +33,15 @@ public class PaletteColorsBean implements Serializable {
         this.color = color;
         this.colorText = colorText;
     }
-
+    public PaletteColorsBean(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
     private Palette.Swatch color;
     private String colorText;
+
+
+    private Bitmap bitmap;
 }

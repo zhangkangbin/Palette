@@ -6,14 +6,15 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Bundle
 import android.os.Environment
 import android.text.TextUtils
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +23,7 @@ import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.tencent.bugly.beta.Beta
 import com.z.palettedemo.BitmapUtils
-
 import com.z.palettedemo.R
-
 import com.z.palettedemo.adapter.PaletteColorsBean
 import com.z.palettedemo.adapter.RecyclerViewAdapter
 import com.z.palettedemo.base.BaseFragment
@@ -41,17 +40,28 @@ import java.util.*
 class HomeFragment : BaseFragment() {
 
     private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mImageCard: ImageView
+
     private lateinit var mColorSeekBar: ColorSeekBar
     private var imagePath: String? = null
-    var newBmp: Bitmap? = null
-    var imageFile: File? = null
+    private var newBmp: Bitmap? = null
+    private var imageFile: File? = null
+
+/*
+    fun  newFragment(imagePath:String):Fragment{
+        val fragment = HomeFragment()
+        val bundle = Bundle()
+        bundle.putString("imagePath", imagePath)
+        fragment.arguments = bundle
+
+        return fragment
+    }*/
+
 
     override fun initView(view: View) {
         mRecyclerView =view. findViewById(R.id.recyclerView)
         mRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        mImageCard = view.findViewById(R.id.imageCard)
+
         mColorSeekBar = view.findViewById(R.id.colorSeekBar)
 
         view.findViewById<Button>(R.id.selectView).setOnClickListener {
@@ -70,6 +80,12 @@ class HomeFragment : BaseFragment() {
         }*/
 
         Beta.checkUpgrade()
+
+
+        arguments?.let {
+            imagePath = it.getString("imagePath")
+        }
+        getColor()
     }
     private fun selectImage() {
         PictureSelector.create(this)
@@ -157,6 +173,15 @@ class HomeFragment : BaseFragment() {
             }
             val swatchList = palette.swatches
             val paletteColorsBeans: MutableList<PaletteColorsBean> = ArrayList()
+
+
+            val bitmap1 = BitmapFactory.decodeStream(FileInputStream(File(imagePath)))
+
+            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap1, swatchList,BitmapUtils.Draw.left)))
+            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap1, swatchList,BitmapUtils.Draw.right)))
+            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap1, swatchList,BitmapUtils.Draw.top)))
+            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap1, swatchList,BitmapUtils.Draw.bottom)))
+
             val colorsList = ArrayList<Int>()
             for (color in swatchList) {
 
@@ -166,38 +191,34 @@ class HomeFragment : BaseFragment() {
             }
 
 
-            /*           val intent = Intent(this, SelectThemeTypeActivity::class.java)
-                       intent.putIntegerArrayListExtra("data",colorsList)
-                       startActivity(intent)
-           */
-            mergeColor(swatchList)
+           // mergeColor(swatchList)
             val vibrantSwatch = palette.vibrantSwatch //获取有活力的颜色样本
             if (vibrantSwatch != null) {
-                paletteColorsBeans.add(PaletteColorsBean(vibrantSwatch, "活力的颜色样本"))
+                paletteColorsBeans.add(PaletteColorsBean(vibrantSwatch, "活力的颜色样本${ThemeUtils.getRgb(vibrantSwatch.rgb)}"))
                 Log.d("test", "活力的颜色样本:" + vibrantSwatch.titleTextColor)
             }
             val drakVibrantSwatch = palette.darkVibrantSwatch //获取有活力 暗色的样本
             if (drakVibrantSwatch != null) {
                 Log.d("test", "有活力暗色的样本:" + drakVibrantSwatch.titleTextColor)
-                paletteColorsBeans.add(PaletteColorsBean(drakVibrantSwatch, "有活力暗色的样本"))
+                paletteColorsBeans.add(PaletteColorsBean(drakVibrantSwatch, "有活力暗色的样本${ThemeUtils.getRgb(drakVibrantSwatch.rgb)}"))
             }
             val mutedSwatch = palette.mutedSwatch //获取有活力 暗色的样本
             if (mutedSwatch != null) {
                 Log.d("test", "柔和的颜色样本:" + mutedSwatch.rgb)
-                paletteColorsBeans.add(PaletteColorsBean(mutedSwatch, "柔和的颜色样本"))
+                paletteColorsBeans.add(PaletteColorsBean(mutedSwatch, "柔和的颜色样本${ThemeUtils.getRgb(mutedSwatch.rgb)}"))
             }
             val lightMutedSwatch = palette.lightMutedSwatch //获取有活力 暗色的样本
             if (lightMutedSwatch != null) {
                 Log.d("test", "柔和的亮色颜色样本:" + lightMutedSwatch.rgb)
-                paletteColorsBeans.add(PaletteColorsBean(lightMutedSwatch, "柔和的亮色颜色样本"))
+                paletteColorsBeans.add(PaletteColorsBean(lightMutedSwatch, "柔和的亮色颜色样本${ThemeUtils.getRgb(lightMutedSwatch.rgb)}"))
             }
             val darkMutedSwatch = palette.darkMutedSwatch //获取有活力 暗色的样本
             if (darkMutedSwatch != null) {
                 Log.d("test", "柔和暗色颜色样本:" + darkMutedSwatch.rgb)
-                paletteColorsBeans.add(PaletteColorsBean(darkMutedSwatch, "柔和暗色颜色样本1" + darkMutedSwatch.titleTextColor))
+                paletteColorsBeans.add(PaletteColorsBean(darkMutedSwatch, "柔和暗色颜色样本${ThemeUtils.getRgb(darkMutedSwatch.rgb)}" ))
             }
 
-            mRecyclerView.setAdapter(RecyclerViewAdapter(paletteColorsBeans))
+            mRecyclerView.adapter = RecyclerViewAdapter(paletteColorsBeans)
         })
     }
 
@@ -210,7 +231,7 @@ class HomeFragment : BaseFragment() {
         try {
             val bitmap1 = BitmapFactory.decodeStream(FileInputStream(imageFile))
             newBmp = BitmapUtils.drawLeft(bitmap1, swatches)
-            mImageCard.setImageBitmap(newBmp)
+         //   mImageCard.setImageBitmap(newBmp)
             Toast.makeText(activity, "成功", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()

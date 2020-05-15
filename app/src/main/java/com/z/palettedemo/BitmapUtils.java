@@ -1,9 +1,13 @@
 package com.z.palettedemo;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 import androidx.palette.graphics.Palette;
@@ -14,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import java.util.Date;
 import java.util.List;
 
 public class BitmapUtils {
@@ -58,13 +63,13 @@ public class BitmapUtils {
     }
     public static Bitmap drawLeft(Bitmap bmp, List<Palette.Swatch> swatchList) {
 
-      return   newBitmap2(bmp,swatchList,Draw.bottom);
+      return  newBitmap(bmp,swatchList,Draw.left);
     }
     public static Bitmap drawRight(Bitmap bmp, List<Palette.Swatch> swatchList) {
 
-        return   newBitmap2(bmp,swatchList,Draw.right);
+        return   newBitmap(bmp,swatchList,Draw.right);
     }
-    public static Bitmap newBitmap2(Bitmap bmp, List<Palette.Swatch> swatchList,Draw draw) {
+    public static Bitmap newBitmap(Bitmap bmp, List<Palette.Swatch> swatchList,Draw draw) {
         Bitmap retBmp = null;
 
         int width = bmp.getWidth();
@@ -200,6 +205,26 @@ public class BitmapUtils {
      */
     private static boolean isEmptyBitmap(Bitmap src) {
         return src == null || src.getWidth() == 0 || src.getHeight() == 0;
+    }
+
+    public static void saveImage(Bitmap imageFile, Context context) {
+
+        if (imageFile == null) {
+            return;
+        }
+
+        File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), new Date().toString()+".jpeg");
+        if (!newFile.exists()) {
+            try {
+                newFile.createNewFile();
+                BitmapUtils.save(imageFile, newFile, Bitmap.CompressFormat.JPEG, true);
+                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(newFile)));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }
