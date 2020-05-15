@@ -3,28 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-
     tools:context=".ui.MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/selectView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="选择图片" />
-
-        <Button
-            android:id="@+id/saveImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="保存图片" />
-
+<!--
         <Button
             android:id="@+id/themeDesign"
             android:layout_width="wrap_content"
@@ -35,34 +18,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="历史主题列表" />
-    </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="6dp"
-        android:gravity="center"
-        android:text="生成颜色数量" />
+-->
 
-    <com.z.palettedemo.view.ColorSeekBar
-        android:id="@+id/colorSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="10"
-        android:maxHeight="2dp"
-        android:progress="6" />
-
-
-    <ImageView
-        android:id="@+id/imageCard"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/mainViewPager"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/mainTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
 
 
 </LinearLayout>

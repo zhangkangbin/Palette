@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.z.palettedemo.BaseViewPagerAdapter
 import com.z.palettedemo.R
+import com.z.palettedemo.adapter.BaseFragmentPagerAdapter
 
 
 class SelectThemeTypeActivity : AppCompatActivity() {
@@ -31,6 +32,8 @@ class SelectThemeTypeActivity : AppCompatActivity() {
 
         val themeViewPager=findViewById<ViewPager>(R.id.themeViewPager)
 
-        themeViewPager.adapter= BaseViewPagerAdapter(listFragment)
+        themeViewPager.adapter= BaseFragmentPagerAdapter(supportFragmentManager,listFragment,null)
+
+      //  tablayout.setupWithViewPager(viewpager);//此方法就是让tablayout和ViewPager联动
     }
 }
