@@ -3,6 +3,7 @@ package com.z.palettedemo.ui
 import android.view.View
 import com.z.palettedemo.R
 import com.z.palettedemo.base.BaseFragment
+import kotlinx.coroutines.*
 
 
 /**
@@ -20,5 +21,18 @@ class ThemeTypeFragment : BaseFragment() {
         return R.layout.fragment_history_theme_list
     }
 
+
+    fun getText(){
+
+        GlobalScope.launch(Dispatchers.Main) {
+            val deferred = async(Dispatchers.IO) {
+                // network request
+                delay(3000)
+                "Get it"
+            }
+
+        }
+
+    }
 
 }

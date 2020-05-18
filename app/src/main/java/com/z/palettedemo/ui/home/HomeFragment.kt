@@ -67,9 +67,7 @@ class HomeFragment : BaseFragment() {
         view.findViewById<Button>(R.id.selectView).setOnClickListener {
             selectImage()
         }
-        view.findViewById<Button>(R.id.saveImage).setOnClickListener {
-            saveImage()
-        }
+
 
 
   /*      findViewById<View>(R.id.themeDesign).setOnClickListener { v: View? ->

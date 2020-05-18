@@ -17,30 +17,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="选择图片" />
-
-        <Button
-            android:id="@+id/saveImage"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="保存图片" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="生成颜色数量" />
+        <com.z.palettedemo.view.ColorSeekBar
+            android:id="@+id/colorSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:maxHeight="2dp"
+            android:progress="6" />
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="6dp"
-        android:text="生成颜色数量" />
 
-    <com.z.palettedemo.view.ColorSeekBar
-        android:id="@+id/colorSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="10"
-        android:maxHeight="2dp"
-        android:progress="6" />
+
+
 
 
     <androidx.recyclerview.widget.RecyclerView
