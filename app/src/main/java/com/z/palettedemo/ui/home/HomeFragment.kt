@@ -123,9 +123,11 @@ class HomeFragment : BaseFragment() {
         //目标bitmap
         val bitmap = BitmapFactory.decodeFile(imagePath, options)
         //  Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aa);
+        //颜色量化算法 ：中位切割
         val builder = Palette.from(bitmap)
         builder.maximumColorCount(maximumColorCount)
         builder.addFilter(object : Palette.Filter {
+            //通过明度判定
             private val BLACK_MAX_LIGHTNESS = 0.05f
             private val WHITE_MIN_LIGHTNESS = 0.95f
 
@@ -133,8 +135,13 @@ class HomeFragment : BaseFragment() {
              * @return true if the color represents a color which is close to black.
              */
             private fun isBlack(hslColor: FloatArray): Boolean {
-                if (hslColor[2] >= BLACK_MAX_LIGHTNESS) {
+                if (hslColor[2] <= BLACK_MAX_LIGHTNESS) {
                     Log.d("test", "过滤黑色")
+                    val builder1 = StringBuilder()
+                    for (f in hslColor) {
+                        builder1.append(" $f ____")
+                    }
+                    Log.d("test",   "____" + builder1.toString())
                 }
                 return hslColor[2] <= BLACK_MAX_LIGHTNESS
             }
@@ -143,9 +150,22 @@ class HomeFragment : BaseFragment() {
              * @return true if the color represents a color which is close to white.
              */
             private fun isWhite(hslColor: FloatArray): Boolean {
+
+                Log.d("test", "过滤白色")
+                val builder1 = StringBuilder()
+                for (f in hslColor) {
+                    builder1.append(" $f ____")
+                    Log.d("test",   "____" + builder1.toString())
+                }
+              /*  Log.d("test",   "____" + builder1.toString())
                 if (hslColor[2] >= WHITE_MIN_LIGHTNESS) {
                     Log.d("test", "过滤白色")
-                }
+                    val builder1 = StringBuilder()
+                    for (f in hslColor) {
+                        builder1.append("$f-")
+                    }
+                    Log.d("test",   "____" + builder1.toString())
+                }*/
                 return hslColor[2] >= WHITE_MIN_LIGHTNESS
             }
 
@@ -154,11 +174,13 @@ class HomeFragment : BaseFragment() {
             }
 
             override fun isAllowed(rgb: Int, hsl: FloatArray): Boolean {
-                val builder1 = StringBuilder()
-                for (f in hsl) {
-                    builder1.append("$f-")
-                }
-                Log.d("test", rgb.toString() + "____" + builder1.toString())
+
+                //H：https://zh.wikipedia.org/wiki/%E8%89%B2%E7%9B%B8
+                //Hue(色调)。0(或360)表示红色，120表示绿色，240表示蓝色，也可取其他数值来指定颜色。取值为：0 - 360
+                //S：
+                //Saturation(饱和度)。取值为：0.0% - 100.0%
+                //L：
+                //Lightness(亮度)。取值为：0.0% - 100.0%
                 return !isWhite(hsl) && !isBlack(hsl) && !isNearRedILine(hsl)
             }
         })
