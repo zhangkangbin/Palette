@@ -7,7 +7,7 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.z.palettedemo"
+        applicationId "com.z.palette"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
@@ -72,6 +72,7 @@ dependencies {
 
     implementation'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
     implementation'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0'
+    implementation project(path: ':palette')
 
 }
 repositories {

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.z.palettedemo.view.ZViewPager
+    <com.z.palette.view.ZViewPager
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:background="#ccc"

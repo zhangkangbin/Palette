@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.z.palettedemo">
+    package="com.z.palette">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".app.MyApplication"
+        android:name="com.z.palette.app.MyApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:theme">
-        <activity android:name=".ui.SelectThemeTypeActivity"></activity>
-        <activity android:name=".ThemeDesignActivity" />
-        <activity android:name=".ThemeDesignListActivity" />
-        <activity android:name=".ui.MainActivity">
+        <activity android:name="com.z.palette.ui.SelectThemeTypeActivity"></activity>
+        <activity android:name="com.z.palette.ThemeDesignActivity" />
+        <activity android:name="com.z.palette.ThemeDesignListActivity" />
+        <activity android:name="com.z.palette.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

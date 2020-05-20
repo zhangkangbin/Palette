@@ -24,7 +24,7 @@
             android:gravity="center"
             android:padding="6dp"
             android:text="生成颜色数量" />
-        <com.z.palettedemo.view.ColorSeekBar
+        <com.z.palette.view.ColorSeekBar
             android:id="@+id/colorSeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

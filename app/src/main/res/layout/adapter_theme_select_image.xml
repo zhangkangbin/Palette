@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".ThemeDesignActivityss">
 
-    <com.z.palettedemo.view.ZImageView
+    <com.z.palette.view.ZImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
