@@ -92,23 +92,6 @@ class HomeFragment : BaseFragment() {
                 .forResult(PictureConfig.CHOOSE_REQUEST)
     }
 
-    private fun saveImage() {
-
-        if (imageFile == null) return
-        val newFile = File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), Date().toString() + imageFile!!.name)
-        if (!newFile.exists()) {
-            try {
-                newFile.createNewFile()
-                BitmapUtils.save(newBmp, newFile, Bitmap.CompressFormat.JPEG, true)
-                activity?.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(newFile)))
-                Toast.makeText(activity, "save success", Toast.LENGTH_SHORT).show()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-
-    }
 
 
     private fun getColor() {
@@ -134,14 +117,7 @@ class HomeFragment : BaseFragment() {
              * @return true if the color represents a color which is close to black.
              */
             private fun isBlack(hslColor: FloatArray): Boolean {
-                if (hslColor[2] <= BLACK_MAX_LIGHTNESS) {
-                    Log.d("test", "过滤黑色")
-                    val builder1 = StringBuilder()
-                    for (f in hslColor) {
-                        builder1.append(" $f ____")
-                    }
-                    Log.d("test",   "____" + builder1.toString())
-                }
+
                 return hslColor[2] <= BLACK_MAX_LIGHTNESS
             }
 
@@ -151,20 +127,7 @@ class HomeFragment : BaseFragment() {
             private fun isWhite(hslColor: FloatArray): Boolean {
 
                 Log.d("test", "过滤白色")
-                val builder1 = StringBuilder()
-                for (f in hslColor) {
-                    builder1.append(" $f ____")
-                    Log.d("test",   "____" + builder1.toString())
-                }
-              /*  Log.d("test",   "____" + builder1.toString())
-                if (hslColor[2] >= WHITE_MIN_LIGHTNESS) {
-                    Log.d("test", "过滤白色")
-                    val builder1 = StringBuilder()
-                    for (f in hslColor) {
-                        builder1.append("$f-")
-                    }
-                    Log.d("test",   "____" + builder1.toString())
-                }*/
+
                 return hslColor[2] >= WHITE_MIN_LIGHTNESS
             }
 
