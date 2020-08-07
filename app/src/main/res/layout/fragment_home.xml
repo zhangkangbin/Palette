@@ -13,6 +13,11 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/themeDesign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="主题卡" />
+        <Button
             android:id="@+id/selectView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

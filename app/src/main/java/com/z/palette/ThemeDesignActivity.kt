@@ -75,7 +75,7 @@ class ThemeDesignActivity : AppCompatActivity() {
     private fun setListImage(selectList :List<LocalMedia>){
 
         for (image in selectList){
-            stringList.add(image.path)
+            stringList.add(image.compressPath)
         }
 
         recyclerView.adapter?.notifyDataSetChanged()

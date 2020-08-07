@@ -23,6 +23,7 @@ import com.palette.Palette
 import com.tencent.bugly.beta.Beta
 import com.z.palette.BitmapUtils
 import com.z.palette.R
+import com.z.palette.ThemeDesignActivity
 import com.z.palette.adapter.PaletteColorsBean
 import com.z.palette.adapter.RecyclerViewAdapter
 import com.z.palette.base.BaseFragment
@@ -69,9 +70,10 @@ class HomeFragment : BaseFragment() {
 
 
 
-  /*      findViewById<View>(R.id.themeDesign).setOnClickListener { v: View? ->
-            startActivity(Intent(this, ThemeDesignActivity::class.java))
+      view.findViewById<View>(R.id.themeDesign).setOnClickListener { v: View? ->
+            startActivity(Intent(activity, ThemeDesignActivity::class.java))
         }
+        /*
         findViewById<View>(R.id.themeDesignList).setOnClickListener { v: View? ->
             startActivity(Intent(this, ThemeDesignListActivity::class.java))
         }*/
