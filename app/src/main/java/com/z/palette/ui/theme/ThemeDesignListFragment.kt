@@ -18,11 +18,17 @@ import java.io.ObjectInputStream
  * A simple [Fragment] subclass.
  */
 class ThemeDesignListFragment : BaseFragment() {
+   private lateinit var views: View
     override fun initView(view: View) {
 
-        initAdapter(view)
+        views=view
+       // initAdapter(view)
     }
 
+    override fun onResume() {
+        super.onResume()
+        initAdapter(views);
+    }
     override fun getLayoutId(): Int {
         return R.layout.fragment_theme_design_list
     }
@@ -45,6 +51,7 @@ class ThemeDesignListFragment : BaseFragment() {
                 input = ObjectInputStream(file.inputStream())
                 try {
                     val data = input.readObject() as ThemeDataSaveBean
+                    mThemeDataSaveBean.clear()
                     mThemeDataSaveBean.add(data)
                 } catch (e: Exception) {
 

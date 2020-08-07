@@ -16,7 +16,8 @@ data class ThemeDataSaveBean  (
         val clothes:String?,
         val styleColors:String?,
         val date:String?,
-        val imagePathList:Set<String>?
+        val uuid:String?,
+        val imagePathList:ArrayList<String>?
 ):Serializable
 
 

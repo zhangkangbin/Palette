@@ -34,23 +34,20 @@ class ThemeDesignActivity : AppCompatActivity() {
     }
 
     private lateinit var recyclerView:RecyclerView
-    private var stringList: LinkedHashSet<String> = LinkedHashSet()
+    private var stringList: ArrayList<String> = ArrayList()
     private fun  initAdapter(){
 
        val data= intent.getSerializableExtra(ThemeDataSaveBean::class.qualifiedName) as ThemeDataSaveBean ?
 
         recyclerView=findViewById(R.id.recyclerViewTheme)
         recyclerView.layoutManager=GridLayoutManager(this,2)
-        stringList.add("header")
+        if(data==null){
+            stringList.add("header")
 
-
-
-        val sharedPreferences = this.getSharedPreferences(Constant.SAVE_THEME_TEMP, Context.MODE_PRIVATE);
-        val local=sharedPreferences?.getStringSet(Constant.THEME_SAVE_TYPE_IMAGE, stringList)
-
-        if (local != null) {
-            stringList.addAll(local)
         }
+
+
+        data?.imagePathList?.let { stringList.addAll(it) }
 
         val themeListAdapter= ThemeDesignAdapter(stringList,data)
         themeListAdapter.setSelectImage(View.OnClickListener {
@@ -81,12 +78,12 @@ class ThemeDesignActivity : AppCompatActivity() {
         recyclerView.adapter?.notifyDataSetChanged()
 
 
-
+/*
         if (stringList.isNotEmpty()){
             val edit = this.getSharedPreferences(Constant.SAVE_THEME_TEMP, Context.MODE_PRIVATE)?.edit()
             edit?.putStringSet(Constant.THEME_SAVE_TYPE_IMAGE, stringList)
             edit?.apply()
-        }
+        }*/
 
 
     }

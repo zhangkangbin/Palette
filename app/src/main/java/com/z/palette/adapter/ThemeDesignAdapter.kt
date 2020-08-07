@@ -20,6 +20,7 @@ import com.z.palette.constant.Constant
 import java.io.File
 import java.io.ObjectOutputStream
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
 
 
@@ -28,7 +29,7 @@ import kotlin.collections.LinkedHashSet
  * on 2020/5/11
  * 界面说明
  */
-class ThemeDesignAdapter(private var imageList: LinkedHashSet<String>,private var themeDataSaveBean:ThemeDataSaveBean?) : RecyclerView.Adapter<ThemeDesignAdapter.ViewHolder>() {
+class ThemeDesignAdapter(private var imageList: ArrayList<String>,private var themeDataSaveBean:ThemeDataSaveBean?) : RecyclerView.Adapter<ThemeDesignAdapter.ViewHolder>() {
 
     private var mSelectImageListener: View.OnClickListener? = null
     private var mPreferences: SharedPreferences? = null
@@ -67,6 +68,7 @@ class ThemeDesignAdapter(private var imageList: LinkedHashSet<String>,private va
     private var mStyle: String? = null
     private var mClothes: String? = null
     private var mStyleColors: String? = null
+    private var mUuid: String? = null
 
     private fun initEditText(holder: ViewHolder) {
 
@@ -82,6 +84,7 @@ class ThemeDesignAdapter(private var imageList: LinkedHashSet<String>,private va
             mStyle = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLE, "")
             mClothes = mPreferences?.getString(Constant.THEME_SAVE_TYPE_CLOTHES, "")
             mStyleColors = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLECOLORS, "")
+            mUuid = mPreferences?.getString(Constant.THEME_SAVE_TYPE_UUID,  UUID.randomUUID().toString())
           //  mStyleColors = mPreferences?.get(Constant.THEME_SAVE_TYPE_IMAGE, "")
 
             holder.edtTheme?.setText(mTheme)
@@ -97,8 +100,8 @@ class ThemeDesignAdapter(private var imageList: LinkedHashSet<String>,private va
             holder.edtStyle?.setText(themeDataSaveBean?.style)
             holder.edtClothes?.setText(themeDataSaveBean?.clothes)
             holder.edtStyleColors?.setText(themeDataSaveBean?.styleColors)
-
-            imageList= themeDataSaveBean?.imagePathList as LinkedHashSet<String>
+            mUuid = themeDataSaveBean!!.uuid
+            //imageList= themeDataSaveBean?.imagePathList as ArrayList<String>
         }
 
     }
@@ -188,7 +191,6 @@ class ThemeDesignAdapter(private var imageList: LinkedHashSet<String>,private va
             holder.imageView!!.setOnLongClickListener {
                 imageList.remove(imageList.elementAt(position))
                 notifyDataSetChanged()
-                saveImages()
                 true
             }
 
@@ -197,21 +199,18 @@ class ThemeDesignAdapter(private var imageList: LinkedHashSet<String>,private va
 
     }
 
-    private fun saveImages(){
-
-        val edit = mPreferences?.edit()
-        edit?.putStringSet(Constant.THEME_SAVE_TYPE_IMAGE, imageList)
-        edit?.apply()
-    }
 
     /**
      * save theme
      */
     fun saveTheme(): Boolean {
 
-        val data = ThemeDataSaveBean(theme = mTheme, style = mStyle, clothes = mClothes, date = Date().toString(),styleColors = mStyleColors, imagePathList = imageList)
-        val time = System.nanoTime()
-        val path = mContext?.cacheDir?.absolutePath + "/${mTheme}${time}.theme"
+
+
+        val data = ThemeDataSaveBean(theme = mTheme, style = mStyle, clothes = mClothes,
+                date = Date().toString(),styleColors = mStyleColors, uuid = mUuid,imagePathList = imageList)
+       // val time = System.nanoTime()
+        val path = mContext?.cacheDir?.absolutePath + "/${mUuid}.theme"
         val createFile = File(path)
         if (!createFile.exists()) {
             val isOk = createFile.createNewFile()
