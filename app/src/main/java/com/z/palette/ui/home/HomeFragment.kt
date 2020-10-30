@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.text.TextUtils
 import android.util.Log
@@ -68,8 +69,8 @@ class HomeFragment : BaseFragment() {
     private fun selectImage() {
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
-                .maxSelectNum(2)
-                .compress(true)
+                .maxSelectNum(1)
+                .isCompress(true)
                 .imageEngine(LoadImageEngine())
                 .forResult(PictureConfig.CHOOSE_REQUEST)
     }
@@ -219,7 +220,24 @@ class HomeFragment : BaseFragment() {
                 // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
                 // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
                 // 4.media.getAndroidQToPath();为Android Q版本特有返回的字段，此字段有值就用来做上传使用
-                imagePath = selectList[0].compressPath
+
+
+                if(selectList[0].compressPath.isNullOrEmpty()){
+
+                    if(selectList[0].path .isNullOrEmpty()){
+                        Toast.makeText(activity, "图片路径为空！", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        imagePath = selectList[0].androidQToPath
+                    }else{
+                        imagePath = selectList[0].path
+                    }
+
+                }else{
+                    imagePath = selectList[0].compressPath
+                }
                 getColor()
                 //   merge(selectList);
             }

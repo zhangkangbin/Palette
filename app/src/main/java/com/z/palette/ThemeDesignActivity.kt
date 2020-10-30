@@ -76,7 +76,8 @@ class ThemeDesignActivity : AppCompatActivity() {
     private fun setListImage(selectList :List<LocalMedia>){
 
         for (image in selectList){
-            stringList.add(image.compressPath)
+            //if(image.androidQToPath)
+            stringList.add(image.path)
         }
 
         recyclerView.adapter?.notifyDataSetChanged()
@@ -94,8 +95,8 @@ class ThemeDesignActivity : AppCompatActivity() {
 
     private fun selectImage() {
       PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
-              .maxSelectNum(9)
-              .compress(true)
+              .maxSelectNum(10)
+              //.compress(true)
               .imageEngine(LoadImageEngine())
               .forResult(PictureConfig.CHOOSE_REQUEST)
     }

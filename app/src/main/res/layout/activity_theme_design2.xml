@@ -8,19 +8,34 @@
     tools:context=".ThemeDesignActivity">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_weight="1"
-        android:id="@+id/recyclerViewTheme"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/btnSaveTheme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_blue"
-        android:gravity="center"
-        android:padding="15dp"
-        android:text="保存主题卡"
-        android:textColor="@color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_weight="1"
+                android:id="@+id/recyclerViewTheme"
+                android:layout_width="match_parent"
+                android:layout_height="0px" />
+
+            <TextView
+                android:id="@+id/btnSaveTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_bg_blue"
+                android:gravity="center"
+                android:padding="15dp"
+                android:layout_margin="16dp"
+                android:text="保存主题卡"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

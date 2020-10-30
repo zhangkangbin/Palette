@@ -55,7 +55,7 @@ class ThemeLocalListAdapter(private val mThemeDataSaveBean: List<ThemeDataSaveBe
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image = itemView.findViewById<ImageView>(R.id.image)
         val theme = itemView.findViewById<TextView>(R.id.text)
-        val linearLayout = itemView.findViewById<LinearLayout>(R.id.linearLayout)
+        val linearLayout = itemView.findViewById<View>(R.id.linearLayout)
 
     }
 
