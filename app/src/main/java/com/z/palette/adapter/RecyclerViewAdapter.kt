@@ -28,7 +28,7 @@ class RecyclerViewAdapter(//  private List<Palette.Swatch> swatchList;
             viewHolder.mView.setBackgroundColor(paletteColorsBeans[i].color.rgb)
             viewHolder.mText.text = paletteColorsBeans[i].colorText
         } else {
-            viewHolder.mText.text = " "
+            viewHolder.mText.text = "长按图片保存生成图片！"
             viewHolder.mView.setImageBitmap(paletteColorsBeans[i].bitmap)
         }
         viewHolder.mView.setOnLongClickListener {

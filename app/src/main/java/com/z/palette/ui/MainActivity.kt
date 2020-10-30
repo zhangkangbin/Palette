@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         val listString = ArrayList<String>()
         listString.add("首页")
-        listString.add("我的")
+        listString.add("我的主题卡")
         val mainViewPager = findViewById<ViewPager>(R.id.mainViewPager)
 
         mainViewPager.adapter = BaseFragmentPagerAdapter(supportFragmentManager, listFragment, listString)

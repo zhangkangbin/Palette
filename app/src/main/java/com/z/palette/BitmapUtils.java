@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -102,6 +103,7 @@ public class BitmapUtils {
                 colorCardWith = height / mCardColorScale;
                 retBmp = Bitmap.createBitmap(width , bmp.getHeight()+colorCardWith, Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(retBmp);
+                canvas.drawColor(Color.WHITE);
                 canvas.drawBitmap(bmp, 0, colorCardWith, null);
 
                 height=0;
@@ -110,6 +112,7 @@ public class BitmapUtils {
                 colorCardWith = height / mCardColorScale;
                 retBmp = Bitmap.createBitmap(width , bmp.getHeight()+colorCardWith, Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(retBmp);
+                canvas.drawColor(Color.WHITE);
                 canvas.drawBitmap(bmp, 0, 0, null);
 
 
@@ -121,7 +124,6 @@ public class BitmapUtils {
         }
 
 
-
         int h ;
         //间距
         int jianju = 0;
@@ -130,6 +132,7 @@ public class BitmapUtils {
         for (int i = size - 1; i >= 0; i--) {
             Palette.Swatch color = swatchList.get(i);
             Paint paint=new Paint();
+            paint.setAntiAlias(true);
             paint.setColor(color.getRgb());
 
             //画左和右边
@@ -142,7 +145,10 @@ public class BitmapUtils {
                 ////        设置画笔属性
                 ////        paint.setStyle(Paint.Style.FILL);//画笔属性是实心圆
                 //        paint.setStyle(Paint.Style.STROKE);//画笔属性是空心圆
-                canvas.drawCircle(jianju+h,height,30,paint);
+
+                int radius=15;
+
+                canvas.drawCircle((jianju+h/2),height+radius*2,radius,paint);
             }
 
           //  canvas.drawRect(0,jianju,colorCardWith,jianju+h,paint);

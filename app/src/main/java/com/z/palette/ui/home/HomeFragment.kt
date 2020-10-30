@@ -26,6 +26,7 @@ import com.z.palette.R
 import com.z.palette.ThemeDesignActivity
 import com.z.palette.adapter.PaletteColorsBean
 import com.z.palette.adapter.RecyclerViewAdapter
+import com.z.palette.app.LoadImageEngine
 import com.z.palette.base.BaseFragment
 import com.z.palette.tool.ThemeUtils
 import com.z.palette.view.ColorSeekBar
@@ -46,21 +47,10 @@ class HomeFragment : BaseFragment() {
     private var newBmp: Bitmap? = null
     private var imageFile: File? = null
 
-/*
-    fun  newFragment(imagePath:String):Fragment{
-        val fragment = HomeFragment()
-        val bundle = Bundle()
-        bundle.putString("imagePath", imagePath)
-        fragment.arguments = bundle
-
-        return fragment
-    }*/
-
 
     override fun initView(view: View) {
         mRecyclerView =view. findViewById(R.id.recyclerView)
         mRecyclerView.layoutManager = LinearLayoutManager(activity)
-
 
         mColorSeekBar = view.findViewById(R.id.colorSeekBar)
 
@@ -68,18 +58,7 @@ class HomeFragment : BaseFragment() {
             selectImage()
         }
 
-
-
-      view.findViewById<View>(R.id.themeDesign).setOnClickListener { v: View? ->
-            startActivity(Intent(activity, ThemeDesignActivity::class.java))
-        }
-        /*
-        findViewById<View>(R.id.themeDesignList).setOnClickListener { v: View? ->
-            startActivity(Intent(this, ThemeDesignListActivity::class.java))
-        }*/
-
-        Beta.checkUpgrade()
-
+     //   Beta.checkUpgrade()
 
         arguments?.let {
             imagePath = it.getString("imagePath")
@@ -91,7 +70,7 @@ class HomeFragment : BaseFragment() {
                 .openGallery(PictureMimeType.ofImage())
                 .maxSelectNum(2)
                 .compress(true)
-                .imageEngine()
+                .imageEngine(LoadImageEngine())
                 .forResult(PictureConfig.CHOOSE_REQUEST)
     }
 

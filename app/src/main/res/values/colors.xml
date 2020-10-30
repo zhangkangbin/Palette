@@ -8,4 +8,7 @@
     <color name="themeEditTextColor">#008577</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#090909</color>
+    <color name="lineGray">#F4f4f4</color>
+    <color name="btnGreen">#02C3EC</color>
+    <color name="btnBlue">#02C3EC</color>
 </resources>

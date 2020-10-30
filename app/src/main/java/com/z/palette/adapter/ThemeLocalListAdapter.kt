@@ -8,7 +8,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.z.palette.R
+import com.z.palette.app.LoadImageEngine
 import com.z.palette.bean.ThemeDataSaveBean
 
 /**
@@ -35,6 +37,14 @@ class ThemeLocalListAdapter(private val mThemeDataSaveBean: List<ThemeDataSaveBe
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         viewHolder.theme.setText(mThemeDataSaveBean[i].theme)
+        context?.let {
+
+            if(mThemeDataSaveBean[i].imagePathList?.size!!<2){
+                return
+            }
+
+
+            Glide.with(it).load( mThemeDataSaveBean[i].imagePathList?.get(1)).into(viewHolder.image) }
         viewHolder.linearLayout.setOnClickListener {
             selectImage?.callData(mThemeDataSaveBean[i])
         }
@@ -43,7 +53,7 @@ class ThemeLocalListAdapter(private val mThemeDataSaveBean: List<ThemeDataSaveBe
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val mView = itemView.findViewById<ImageView>(R.id.image)
+        val image = itemView.findViewById<ImageView>(R.id.image)
         val theme = itemView.findViewById<TextView>(R.id.text)
         val linearLayout = itemView.findViewById<LinearLayout>(R.id.linearLayout)
 

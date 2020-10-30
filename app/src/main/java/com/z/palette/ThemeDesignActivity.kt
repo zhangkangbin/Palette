@@ -16,13 +16,14 @@ import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.z.palette.adapter.ThemeDesignAdapter
+import com.z.palette.app.LoadImageEngine
 import com.z.palette.bean.ThemeDataSaveBean
 import com.z.palette.constant.Constant
 
 /**
  * @author by zhangkangbin
  * on 2020/5/11
- * 界面说明
+ * 主题卡添加
  */
 class ThemeDesignActivity : AppCompatActivity() {
 
@@ -36,14 +37,16 @@ class ThemeDesignActivity : AppCompatActivity() {
     private lateinit var recyclerView:RecyclerView
     private var stringList: ArrayList<String> = ArrayList()
     private fun  initAdapter(){
-
-       val data= intent.getSerializableExtra(ThemeDataSaveBean::class.qualifiedName) as ThemeDataSaveBean ?
+        var data: ThemeDataSaveBean? =null;
+        val type=intent.getIntExtra("TYPE",0)
+        if(type==0){
+             data= intent.getSerializableExtra(ThemeDataSaveBean::class.qualifiedName) as ThemeDataSaveBean ?
+        }
 
         recyclerView=findViewById(R.id.recyclerViewTheme)
         recyclerView.layoutManager=GridLayoutManager(this,2)
         if(data==null){
             stringList.add("header")
-
         }
 
 
@@ -57,10 +60,11 @@ class ThemeDesignActivity : AppCompatActivity() {
 
         recyclerView.adapter=themeListAdapter
 
-        findViewById<Button>(R.id.btnSaveTheme).setOnClickListener {
+        findViewById<View>(R.id.btnSaveTheme).setOnClickListener {
 
             //保存
             if (themeListAdapter.saveTheme()){
+                finish()
                 Toast.makeText(this,"saved  successfully ",Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(this,"saved  fail ",Toast.LENGTH_SHORT).show()
@@ -92,6 +96,7 @@ class ThemeDesignActivity : AppCompatActivity() {
       PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
               .maxSelectNum(9)
               .compress(true)
+              .imageEngine(LoadImageEngine())
               .forResult(PictureConfig.CHOOSE_REQUEST)
     }
 

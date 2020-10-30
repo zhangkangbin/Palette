@@ -58,7 +58,7 @@ class ThemeDesignAdapter(private var imageList: ArrayList<String>,private var th
             val holder = ViewHolder(view)
             initEditText(holder)
 
-            holder
+           return holder
         }
 
 
@@ -79,7 +79,7 @@ class ThemeDesignAdapter(private var imageList: ArrayList<String>,private var th
 
         if(themeDataSaveBean==null){
 
-            mPreferences = mContext?.getSharedPreferences(Constant.SAVE_THEME_TEMP, Context.MODE_PRIVATE)
+  /*          mPreferences = mContext?.getSharedPreferences(Constant.SAVE_THEME_TEMP, Context.MODE_PRIVATE)
             mTheme = mPreferences?.getString(Constant.THEME_SAVE_TYPE_THEME, "")
             mStyle = mPreferences?.getString(Constant.THEME_SAVE_TYPE_STYLE, "")
             mClothes = mPreferences?.getString(Constant.THEME_SAVE_TYPE_CLOTHES, "")
@@ -87,13 +87,18 @@ class ThemeDesignAdapter(private var imageList: ArrayList<String>,private var th
             mUuid = mPreferences?.getString(Constant.THEME_SAVE_TYPE_UUID,  UUID.randomUUID().toString())
           //  mStyleColors = mPreferences?.get(Constant.THEME_SAVE_TYPE_IMAGE, "")
 
-            holder.edtTheme?.setText(mTheme)
-            holder.edtStyle?.setText(mStyle)
+
+*/
+            mTheme=holder.edtTheme?.text.toString()
+            mStyle=holder.edtClothes?.text.toString()
+            mClothes=holder.edtClothes?.text.toString()
+            mStyleColors=holder.edtStyleColors?.text.toString()
+            mUuid= UUID.randomUUID().toString();
+   /*         mStyleColors.edtStyle?.setText(mStyle)
             holder.edtClothes?.setText(mClothes)
             holder.edtStyleColors?.setText(mStyleColors)
 
-
-
+*/
 
         }else{
             holder.edtTheme?.setText(themeDataSaveBean?.theme)

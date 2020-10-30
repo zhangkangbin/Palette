@@ -22,6 +22,14 @@ class ThemeDesignListFragment : BaseFragment() {
     override fun initView(view: View) {
 
         views=view
+
+        view.findViewById<View>(R.id.themeDesign).setOnClickListener { v: View? ->
+
+            val intent=Intent()
+            intent.putExtra("TYPE",1)
+            activity?.let { intent.setClass(it,ThemeDesignActivity::class.java) }
+            startActivity(intent)
+        }
        // initAdapter(view)
     }
 
@@ -39,7 +47,7 @@ class ThemeDesignListFragment : BaseFragment() {
 
         recyclerView = view.findViewById(R.id.recyclerViewLocalTheme)
         recyclerView.layoutManager = GridLayoutManager(activity, 1)
-
+        mThemeDataSaveBean.clear()
 
         val fileList = activity?.cacheDir?.listFiles() ?: return
 
@@ -51,7 +59,7 @@ class ThemeDesignListFragment : BaseFragment() {
                 input = ObjectInputStream(file.inputStream())
                 try {
                     val data = input.readObject() as ThemeDataSaveBean
-                    mThemeDataSaveBean.clear()
+
                     mThemeDataSaveBean.add(data)
                 } catch (e: Exception) {
 
