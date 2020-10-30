@@ -78,6 +78,7 @@ public class BitmapUtils {
 
         int colorCardWith = 0;
 
+        Bitmap.Config config = bmp.getConfig();
 
         Canvas canvas = null;
 
@@ -122,9 +123,8 @@ public class BitmapUtils {
 
 
         int h ;
-
+        //间距
         int jianju = 0;
-
         int  size=swatchList.size();
 
         for (int i = size - 1; i >= 0; i--) {
@@ -132,28 +132,61 @@ public class BitmapUtils {
             Paint paint=new Paint();
             paint.setColor(color.getRgb());
 
+            //画左和右边
             if(draw==Draw.left||Draw.right==draw){
                 h=height / swatchList.size();
                 canvas.drawRect(width,jianju,width+colorCardWith,jianju+h,paint);
             }else {
                 h=width / swatchList.size();
-                canvas.drawRect(jianju,height,jianju+h,height+colorCardWith,paint);
+            //    canvas.drawRect(jianju,height,jianju+h,height+colorCardWith,paint);
+                ////        设置画笔属性
+                ////        paint.setStyle(Paint.Style.FILL);//画笔属性是实心圆
+                //        paint.setStyle(Paint.Style.STROKE);//画笔属性是空心圆
+                canvas.drawCircle(jianju+h,height,30,paint);
             }
 
           //  canvas.drawRect(0,jianju,colorCardWith,jianju+h,paint);
             jianju=jianju+h;
         }
-   /*     for(Palette.Swatch color:swatchList){
-            Paint paint=new Paint();
-            paint.setColor(color.getRgb());
-            canvas.drawRect(width,jianju,width+colorCardWith,jianju+h,paint);
-            jianju=jianju+h;
-        }*/
 
 
 
         return retBmp;
     }
+
+
+/*
+    private void drawRectangle(Canvas canvas, List<Palette.Swatch> swatchList,Draw draw){
+        int h ;
+        //间距
+        int jianju = 0;
+        int  size=swatchList.size();
+
+        for (int i = size - 1; i >= 0; i--) {
+            Palette.Swatch color = swatchList.get(i);
+            Paint paint=new Paint();
+            paint.setColor(color.getRgb());
+
+            //画左和右边
+            if(draw==Draw.left||Draw.right==draw){
+                h=height / swatchList.size();
+                canvas.drawRect(width,jianju,width+colorCardWith,jianju+h,paint);
+            }else {
+                h=width / swatchList.size();
+                //    canvas.drawRect(jianju,height,jianju+h,height+colorCardWith,paint);
+                ////        设置画笔属性
+                ////        paint.setStyle(Paint.Style.FILL);//画笔属性是实心圆
+                //        paint.setStyle(Paint.Style.STROKE);//画笔属性是空心圆
+                canvas.drawCircle(jianju+h,height,30,paint);
+            }
+
+            //  canvas.drawRect(0,jianju,colorCardWith,jianju+h,paint);
+            jianju=jianju+h;
+        }
+*/
+
+
+
 
     public static Bitmap resizeBitmap(Bitmap bitmap, int newWidth, int newHeight) {
         float scaleWidth = ((float) newWidth) / bitmap.getWidth();

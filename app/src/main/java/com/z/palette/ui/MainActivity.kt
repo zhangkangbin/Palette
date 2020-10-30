@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+
 import com.z.palette.*
 import com.z.palette.adapter.BaseFragmentPagerAdapter
 

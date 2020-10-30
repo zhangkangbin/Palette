@@ -91,6 +91,7 @@ class HomeFragment : BaseFragment() {
                 .openGallery(PictureMimeType.ofImage())
                 .maxSelectNum(2)
                 .compress(true)
+                .imageEngine()
                 .forResult(PictureConfig.CHOOSE_REQUEST)
     }
 
@@ -193,7 +194,7 @@ class HomeFragment : BaseFragment() {
             }
             val lightMutedSwatch = palette.lightMutedSwatch //获取有活力 暗色的样本
             if (lightMutedSwatch != null) {
-                Log.d("test", "柔和的亮色颜色样本:" + lightMutedSwatch.rgb)
+                Log.d("test", "柔和的亮色颜色样本:" + lightMutedSwatch.hsl)
                 paletteColorsBeans.add(PaletteColorsBean(lightMutedSwatch, "柔和的亮色颜色样本${ThemeUtils.getRgb(lightMutedSwatch.rgb)}"))
             }
             val darkMutedSwatch = palette.darkMutedSwatch //获取有活力 暗色的样本
