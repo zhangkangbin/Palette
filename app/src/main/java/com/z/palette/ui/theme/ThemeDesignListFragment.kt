@@ -12,6 +12,7 @@ import com.z.palette.ThemeDesignActivity
 import com.z.palette.adapter.ThemeLocalListAdapter
 import com.z.palette.base.BaseFragment
 import com.z.palette.bean.ThemeDataSaveBean
+import com.z.palette.ui.AddWordsActivity
 import java.io.ObjectInputStream
 
 /**
@@ -29,6 +30,10 @@ class ThemeDesignListFragment : BaseFragment() {
             intent.putExtra("TYPE",1)
             activity?.let { intent.setClass(it,ThemeDesignActivity::class.java) }
             startActivity(intent)
+        }
+        view.findViewById<View>(R.id.addWords).setOnClickListener { v: View? ->
+
+            startActivity(Intent(activity,AddWordsActivity::class.java))
         }
        // initAdapter(view)
     }

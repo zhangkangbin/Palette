@@ -148,7 +148,7 @@ class MyView : View {
 
 
 
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.bb)
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.demo_img)
         val bitmapTemp = bitmap.copy(Bitmap.Config.RGB_565, true)
 
         var xx=x+10
