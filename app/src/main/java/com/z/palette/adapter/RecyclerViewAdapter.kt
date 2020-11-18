@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.z.palette.BitmapUtils
 import com.z.palette.R
 
@@ -22,14 +23,20 @@ class RecyclerViewAdapter(//  private List<Palette.Swatch> swatchList;
         return ViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.adapter_main, viewGroup, false))
     }
 
+    private var mHeight:Int=0;
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         if (null != paletteColorsBeans[i].color) {
-            viewHolder.mView.setImageBitmap(null)
-            viewHolder.mView.setBackgroundColor(paletteColorsBeans[i].color.rgb)
+            viewHolder.mColor.visibility=View.VISIBLE
+            viewHolder.mView.visibility=View.GONE
+            viewHolder.mColor.setBackgroundColor(paletteColorsBeans[i].color.rgb)
             viewHolder.mText.text = paletteColorsBeans[i].colorText
         } else {
-            viewHolder.mText.text = "长按图片保存生成图片！"
-            viewHolder.mView.setImageBitmap(paletteColorsBeans[i].bitmap)
+
+            viewHolder.mColor.visibility=View.GONE
+            viewHolder.mView.visibility=View.VISIBLE
+           //viewHolder.mView.maxHeight=paletteColorsBeans[i].bitmap.
+            context?.let { Glide.with(it).load((paletteColorsBeans[i].bitmap)).into(viewHolder.mView) }
+            //viewHolder.mView.setImageBitmap(paletteColorsBeans[i].bitmap)
         }
         viewHolder.mView.setOnLongClickListener {
             if (null != paletteColorsBeans[i].bitmap) {
@@ -46,11 +53,13 @@ class RecyclerViewAdapter(//  private List<Palette.Swatch> swatchList;
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         public val mView: ImageView
+        public val mColor: ImageView
         public val mText: TextView
 
         init {
             mView = itemView.findViewById(R.id.image)
             mText = itemView.findViewById(R.id.text)
+            mColor = itemView.findViewById(R.id.imageColor)
         }
     }
 
