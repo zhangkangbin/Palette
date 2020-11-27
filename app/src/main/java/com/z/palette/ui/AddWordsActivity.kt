@@ -86,9 +86,10 @@ class AddWordsActivity : AppCompatActivity() {
 
                         addWordsTvWords.text=lists[0]
                         addWordsTvAuthor.text=""
+                        addWordsTvAuthor.visibility=View.GONE
                       //  addWordsTvAuthor.text="———"+lists[1]
                     }else{
-
+                        addWordsTvAuthor.visibility=View.VISIBLE
                         addWordsTvWords.text=lists[0]
                         addWordsTvAuthor.text="——"+lists[1]
                     }
