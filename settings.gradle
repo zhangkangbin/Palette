@@ -1,2 +1,3 @@
+include ':packApk'
 include ':app'
 include ':palette'
