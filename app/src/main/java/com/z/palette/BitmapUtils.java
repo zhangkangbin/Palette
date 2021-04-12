@@ -247,17 +247,24 @@ public class BitmapUtils {
         return src == null || src.getWidth() == 0 || src.getHeight() == 0;
     }
 
+    /**
+     * bitmap 应该是被压缩了。要用源文件生成才行。
+     * @param imageFile
+     * @param context
+     */
     public static void saveImage(Bitmap imageFile, Context context) {
 
         if (imageFile == null) {
             return;
         }
 
-        File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), new Date().toString()+".jpeg");
+
+        File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                new Date().toString()+"."+Bitmap.CompressFormat.PNG);
         if (!newFile.exists()) {
             try {
                 newFile.createNewFile();
-                BitmapUtils.save(imageFile, newFile, Bitmap.CompressFormat.JPEG, true);
+                BitmapUtils.save(imageFile, newFile, Bitmap.CompressFormat.PNG, true);
                 context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(newFile)));
 
             } catch (IOException e) {

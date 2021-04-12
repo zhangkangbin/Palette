@@ -33,10 +33,12 @@ class MainActivity : AppCompatActivity() {
 
         val listFragment = ArrayList<Fragment>()
         listFragment.add(HomeFragment())
+        listFragment.add(HistoryThemeListFragment())
         listFragment.add(ThemeDesignListFragment())
 
         val listString = ArrayList<String>()
         listString.add("首页")
+        listString.add("历史采色卡")
         listString.add("我的主题卡")
         val mainViewPager = findViewById<ViewPager>(R.id.mainViewPager)
 

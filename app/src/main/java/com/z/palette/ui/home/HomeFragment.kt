@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.text.TextUtils
@@ -14,17 +13,14 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.palette.Palette
-import com.tencent.bugly.beta.Beta
 import com.z.palette.BitmapUtils
 import com.z.palette.R
-import com.z.palette.ThemeDesignActivity
 import com.z.palette.adapter.PaletteColorsBean
 import com.z.palette.adapter.RecyclerViewAdapter
 import com.z.palette.app.LoadImageEngine
@@ -33,7 +29,8 @@ import com.z.palette.tool.ThemeUtils
 import com.z.palette.view.ColorSeekBar
 import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
+import java.io.FileOutputStream
+import java.io.OutputStream
 import java.util.*
 
 /**
@@ -239,9 +236,45 @@ class HomeFragment : BaseFragment() {
                     imagePath = selectList[0].compressPath
                 }
                 getColor()
+
+                if(imagePath.isNullOrEmpty()){
+                    return
+                }
+
+                //copyFile(imagePath!!,context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!.path)
+
                 //   merge(selectList);
             }
         }
     }
 
+    /**
+     * 复制文件
+     * @param fileInputStream
+     * @param fileOutputStream
+     *
+     *
+     *
+     * @return
+     */
+    fun copyFile(fileInput: String, fileOutput: String): Boolean {
+        return try {
+
+            val inputFile=File(fileInput);
+            val outputFile=File(fileOutput,inputFile.name);
+            val fileInputStream=FileInputStream(inputFile)
+            val fileOutputStream=FileOutputStream(outputFile)
+            val buffer = ByteArray(1024)
+            var byteRead: Int
+            while (fileInputStream.read(buffer).also { byteRead = it } != -1) {
+                fileOutputStream.write(buffer, 0, byteRead)
+            }
+            fileInputStream.close()
+            fileOutputStream.flush()
+            fileOutputStream.close()
+            true
+        } catch (e: java.lang.Exception) {
+            false
+        }
+    }
 }
