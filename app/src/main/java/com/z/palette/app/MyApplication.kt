@@ -1,7 +1,6 @@
 package com.z.palette.app
 
 import android.app.Application
-import com.tencent.bugly.Bugly
 
 /**
  * @author by zhangkangbin
@@ -12,6 +11,6 @@ class MyApplication :Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Bugly.init(this, AppKey.BUGLY_KEY_ID, true)
+     //   Bugly.init(this, AppKey.BUGLY_KEY_ID, true)
     }
 }

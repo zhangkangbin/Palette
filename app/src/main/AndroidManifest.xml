@@ -16,11 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:theme">
-        <activity android:name=".ui.AddWordsActivity"></activity>
+        <activity android:name=".ui.AddWordsActivity" />
         <activity android:name=".ui.SelectThemeTypeActivity" />
         <activity android:name=".ThemeDesignActivity" />
         <activity android:name=".ThemeDesignListActivity" />
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
