@@ -20,6 +20,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -259,8 +261,9 @@ public class BitmapUtils {
         }
 
 
+
         File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                new Date().toString()+"."+Bitmap.CompressFormat.PNG);
+                getDate()+Bitmap.CompressFormat.PNG);
         if (!newFile.exists()) {
             try {
                 newFile.createNewFile();
@@ -274,4 +277,12 @@ public class BitmapUtils {
 
     }
 
+    private static String getDate(){
+        Date date = new Date();
+        DateFormat bf = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss.");
+        String format = bf.format(date);
+
+        return format;
+
+    }
 }

@@ -37,7 +37,10 @@ class AddWordsActivity : AppCompatActivity() {
         val addWordsTvAuthor = findViewById<TextView>(R.id.addWordsTvAuthor)
         findViewById<View>(R.id.addWordsLayout).setOnLongClickListener { v ->
             if (v != null) {
-                model.saveBitmap(applicationContext, v)
+                model.saveBitmap(applicationContext, v){
+
+                     Toast.makeText(this,"saved successful", Toast.LENGTH_SHORT).show()
+                }
             }
             true
         }

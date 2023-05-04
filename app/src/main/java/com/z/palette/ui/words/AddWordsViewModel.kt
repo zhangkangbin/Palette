@@ -13,7 +13,7 @@ class AddWordsViewModel :ViewModel() {
     /**
      * view转bitmap
      */
-    fun saveBitmap(applicationContext:Context,v: View){
+    fun saveBitmap(applicationContext:Context,v: View,onSuccess:()->Unit){
         val w = v.width
         val h = v.height
         val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
@@ -23,9 +23,9 @@ class AddWordsViewModel :ViewModel() {
         v.layout(0, 0, w, h)
         v.draw(c)
 
-       // Toast.makeText(this,"saved successful", Toast.LENGTH_SHORT).show()
+
         BitmapUtils.saveImage(bmp,applicationContext)
 
-
+        onSuccess()
     }
 }
