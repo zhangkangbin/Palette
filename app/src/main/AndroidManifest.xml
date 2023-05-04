@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:theme">
-        <activity android:name=".ui.AddWordsActivity" />
+        <activity android:name=".ui.words.AddWordsActivity" />
         <activity android:name=".ui.SelectThemeTypeActivity" />
         <activity android:name=".ThemeDesignActivity" />
         <activity android:name=".ThemeDesignListActivity" />

@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.AddWordsActivity">
+    tools:context=".ui.words.AddWordsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
