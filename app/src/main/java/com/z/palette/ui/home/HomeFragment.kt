@@ -6,31 +6,30 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.os.Environment
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
-import com.luck.picture.lib.config.PictureMimeType
 import com.palette.Palette
 import com.z.palette.BitmapUtils
 import com.z.palette.R
 import com.z.palette.adapter.PaletteColorsBean
 import com.z.palette.adapter.RecyclerViewAdapter
-import com.z.palette.app.LoadImageEngine
 import com.z.palette.base.BaseFragment
 import com.z.palette.tool.ThemeUtils
 import com.z.palette.view.ColorSeekBar
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.OutputStream
 import java.util.*
 
 /**
@@ -52,8 +51,12 @@ class HomeFragment : BaseFragment() {
 
         mColorSeekBar = view.findViewById(R.id.colorSeekBar)
 
+
+        val pickMedia = selectImage()
         view.findViewById<Button>(R.id.selectView).setOnClickListener {
-            selectImage()
+         //   selectImage()
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+
         }
 
      //   Beta.checkUpgrade()
@@ -61,29 +64,19 @@ class HomeFragment : BaseFragment() {
         arguments?.let {
             imagePath = it.getString("imagePath")
         }
-        getColor()
-    }
-    private fun selectImage() {
-        PictureSelector.create(this)
-                .openGallery(PictureMimeType.ofImage())
-                .maxSelectNum(1)
-                .isCompress(true)
-                .imageEngine(LoadImageEngine())
-                .forResult(PictureConfig.CHOOSE_REQUEST)
+       // getColor(bitmap)
     }
 
 
 
-    private fun getColor() {
-        if (TextUtils.isEmpty(imagePath)) {
-            return
-        }
+    private fun getColor(bitmap: Bitmap) {
+
         val maximumColorCount: Int = mColorSeekBar.getProgress()
         val options = BitmapFactory.Options()
         //不加载图片到内存里面
         options.inJustDecodeBounds = false
         //目标bitmap
-        val bitmap = BitmapFactory.decodeFile(imagePath, options)
+     //   val bitmap = BitmapFactory.decodeFile(imagePath, options)
         //  Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aa);
         //颜色量化算法 ：中位切割
         val builder = Palette.from(bitmap)
@@ -137,12 +130,12 @@ class HomeFragment : BaseFragment() {
             val paletteColorsBeans: MutableList<PaletteColorsBean> = ArrayList()
 
 
-            val bitmap1 = BitmapFactory.decodeStream(FileInputStream(File(imagePath)))
+          //  val bitmap1 = BitmapFactory.decodeStream(FileInputStream(File(imagePath)))
 
-            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap1, swatchList,BitmapUtils.Draw.left)))
-            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap1, swatchList,BitmapUtils.Draw.right)))
-            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap1, swatchList,BitmapUtils.Draw.top)))
-            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap1, swatchList,BitmapUtils.Draw.bottom)))
+            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap, swatchList,BitmapUtils.Draw.left)))
+            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap, swatchList,BitmapUtils.Draw.right)))
+            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap, swatchList,BitmapUtils.Draw.top)))
+            paletteColorsBeans.add(PaletteColorsBean( BitmapUtils.newBitmap(bitmap, swatchList,BitmapUtils.Draw.bottom)))
 
             val colorsList = ArrayList<Int>()
             for (color in swatchList) {
@@ -235,7 +228,7 @@ class HomeFragment : BaseFragment() {
                 }else{
                     imagePath = selectList[0].compressPath
                 }
-                getColor()
+                //getColor(bitmap)
 
                 if(imagePath.isNullOrEmpty()){
                     return
@@ -276,5 +269,40 @@ class HomeFragment : BaseFragment() {
         } catch (e: java.lang.Exception) {
             false
         }
+    }
+    private fun selectImage(): ActivityResultLauncher<PickVisualMediaRequest> {
+        // Registers a photo picker activity launcher in single-select mode.
+        return registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            // Callback is invoked after the user selects a media item or closes the
+            // photo picker.
+            if (uri != null) {
+
+                val bitmap=BitmapFactory.decodeStream(this.context?.contentResolver?.openInputStream(uri))
+
+                getColor(bitmap)
+
+               // Glide.with(this).load(uri).into(addWordsImage)
+
+                Log.d("PhotoPicker", "Selected URI: $uri")
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
+        }
+    }
+
+    private fun dd(){
+      //  val selectList = PictureSelector.obtainMultipleResult(data)
+        // 例如 LocalMedia 里面返回四种path
+        // 1.media.getPath(); 为原图path
+        // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
+        // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
+        // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+        // 4.media.getAndroidQToPath();为Android Q版本特有返回的字段，此字段有值就用来做上传使用
+
+
+
+        //copyFile(imagePath!!,context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!.path)
+
+        //   merge(selectList);
     }
 }

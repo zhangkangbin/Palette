@@ -18,20 +18,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.z.palette.BitmapUtils
 import com.z.palette.R
 import java.lang.Exception
 
 
 class AddWordsActivity : AppCompatActivity() {
-    // val models: AddWordsViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_words)
 
         val model: AddWordsViewModel by viewModels()
-        //val veiwModel : AddWordsViewModel by viewModelFactory { AddWordsViewModel }
-
         val addWordsImage = findViewById<ImageView>(R.id.addWordsImage)
         val addWordsTvWords = findViewById<TextView>(R.id.addWordsTvWords)
         val addWordsTvAuthor = findViewById<TextView>(R.id.addWordsTvAuthor)
@@ -102,6 +98,7 @@ class AddWordsActivity : AppCompatActivity() {
             // Callback is invoked after the user selects a media item or closes the
             // photo picker.
             if (uri != null) {
+
                 Glide.with(this@AddWordsActivity).load(uri).into(addWordsImage)
 
                 Log.d("PhotoPicker", "Selected URI: $uri")

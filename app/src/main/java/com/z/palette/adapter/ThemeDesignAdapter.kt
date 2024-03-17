@@ -29,7 +29,8 @@ import kotlin.collections.LinkedHashSet
  * on 2020/5/11
  * 界面说明
  */
-class ThemeDesignAdapter(private var imageList: ArrayList<String>,private var themeDataSaveBean:ThemeDataSaveBean?) : RecyclerView.Adapter<ThemeDesignAdapter.ViewHolder>() {
+class ThemeDesignAdapter(private var imageList: ArrayList<String>,
+                         private var themeDataSaveBean:ThemeDataSaveBean?) : RecyclerView.Adapter<ThemeDesignAdapter.ViewHolder>() {
 
     private var mSelectImageListener: View.OnClickListener? = null
     private var mPreferences: SharedPreferences? = null
