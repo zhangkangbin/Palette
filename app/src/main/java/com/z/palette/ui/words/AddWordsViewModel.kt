@@ -15,16 +15,17 @@ class AddWordsViewModel :ViewModel() {
      * 保持原来的15dp白色边距和布局样式
      * 根据图片实际尺寸动态调整所有参数
      * 
+     * 注意：此方法应该在IO线程中调用，避免阻塞主线程
+     * 
      * @param applicationContext 应用上下文
      * @param originalBitmap 原始图片
      * @param text 要绘制的文字
-     * @param onSuccess 成功回调
+     * @param onSuccess 成功回调（在调用线程中执行）
      */
     fun saveBitmap(applicationContext: Context, originalBitmap: Bitmap?, text: String, onSuccess: () -> Unit) {
         if (originalBitmap == null) {
             return
         }
-
         // 获取屏幕密度和宽度
         val displayMetrics = applicationContext.resources.displayMetrics
         val screenWidthPx = displayMetrics.widthPixels.toFloat()
@@ -39,7 +40,7 @@ class AddWordsViewModel :ViewModel() {
         
         // 设置文字画笔 - 12sp按比例放大
         val textPaint = Paint().apply {
-            color = Color.GRAY  // 
+            color = Color.GRAY  //
             textSize = 12 * displayMetrics.scaledDensity * scale  // 12sp按比例放大
             isAntiAlias = true  // 抗锯齿
             style = Paint.Style.FILL

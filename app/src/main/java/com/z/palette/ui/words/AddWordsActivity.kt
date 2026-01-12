@@ -1,11 +1,15 @@
 package com.z.palette.ui.words
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,6 +19,10 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.bumptech.glide.Glide
 import com.z.palette.R
 import java.lang.Exception
@@ -38,10 +46,34 @@ class AddWordsActivity : AppCompatActivity() {
             val text = addWordsTvWords.text.toString()
             
             if (originalBitmap != null && text.isNotEmpty()) {
-                model.saveBitmap(applicationContext, originalBitmap, text) {
-                    Toast.makeText(this, "saved successful", Toast.LENGTH_SHORT).show()
+                // 播放保存动画
+                playSaveAnimation(v) {
+                    // 动画完成后在子线程执行保存
+                    lifecycleScope.launch {
+                        try {
+                            // 在IO线程执行保存操作
+                            withContext(Dispatchers.IO) {
+                                model.saveBitmap(applicationContext, originalBitmap, text) {
+                                    // 回调在子线程，需要切换到主线程更新UI
+                                    lifecycleScope.launch(Dispatchers.Main) {
+                                        playSuccessAnimation(v)
+                                        Toast.makeText(this@AddWordsActivity, "✓ Saved successful", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        } catch (e: Exception) {
+                            // 错误处理，切换到主线程显示错误
+                            withContext(Dispatchers.Main) {
+                                playErrorAnimation(v)
+                                Toast.makeText(this@AddWordsActivity, "Save failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                                Log.e("AddWordsActivity", "Save failed", e)
+                            }
+                        }
+                    }
                 }
             } else {
+                // 播放错误抖动动画
+                playErrorAnimation(v)
                 if (originalBitmap == null) {
                     Toast.makeText(this, "Please select an image first", Toast.LENGTH_SHORT).show()
                 } else {
@@ -101,6 +133,54 @@ class AddWordsActivity : AppCompatActivity() {
         originalBitmap = null
     }
 
+    /**
+     * 播放保存动画 - 缩小效果
+     */
+    private fun playSaveAnimation(view: View, onAnimationEnd: () -> Unit) {
+        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f)
+        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.95f)
+        val alpha = ObjectAnimator.ofFloat(view, "alpha", 1f, 0.8f)
+        
+        val animatorSet = AnimatorSet()
+        animatorSet.playTogether(scaleX, scaleY, alpha)
+        animatorSet.duration = 200
+        animatorSet.interpolator = AccelerateDecelerateInterpolator()
+        
+        animatorSet.addListener(object : android.animation.Animator.AnimatorListener {
+            override fun onAnimationStart(animation: android.animation.Animator) {}
+            override fun onAnimationEnd(animation: android.animation.Animator) {
+                onAnimationEnd()
+            }
+            override fun onAnimationCancel(animation: android.animation.Animator) {}
+            override fun onAnimationRepeat(animation: android.animation.Animator) {}
+        })
+        
+        animatorSet.start()
+    }
+
+    /**
+     * 播放成功动画 - 恢复并放大
+     */
+    private fun playSuccessAnimation(view: View) {
+        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1.05f, 1f)
+        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1.05f, 1f)
+        val alpha = ObjectAnimator.ofFloat(view, "alpha", 0.8f, 1f)
+        
+        val animatorSet = AnimatorSet()
+        animatorSet.playTogether(scaleX, scaleY, alpha)
+        animatorSet.duration = 400
+        animatorSet.interpolator = OvershootInterpolator()
+        animatorSet.start()
+    }
+
+    /**
+     * 播放错误动画 - 抖动效果
+     */
+    private fun playErrorAnimation(view: View) {
+        val shake = ObjectAnimator.ofFloat(view, "translationX", 0f, -25f, 25f, -25f, 25f, -15f, 15f, -6f, 6f, 0f)
+        shake.duration = 500
+        shake.start()
+    }
 
     private fun selectImage(addWordsImage: ImageView): ActivityResultLauncher<PickVisualMediaRequest> {
         // Registers a photo picker activity launcher in single-select mode.
