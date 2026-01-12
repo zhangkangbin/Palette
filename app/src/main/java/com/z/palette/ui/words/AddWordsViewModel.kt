@@ -25,13 +25,13 @@ class AddWordsViewModel :ViewModel() {
         }
 
         val density = applicationContext.resources.displayMetrics.density
-        val margin = (2*15 * density).toInt() // 15dp转为像素
+        val margin = (15 * density).toInt() // 15dp转为像素
         val textMarginBottom = (10 * density).toInt() // TextView底部额外间距
         
         // 设置文字画笔 - 复现原TextView样式 (12sp, 黑色)
         val textPaint = Paint().apply {
             color = Color.BLACK  // 黑色文字
-            textSize = 24 * applicationContext.resources.displayMetrics.scaledDensity  // 12sp
+            textSize = 12 * applicationContext.resources.displayMetrics.scaledDensity  // 12sp
             isAntiAlias = true  // 抗锯齿
             style = Paint.Style.FILL
         }
