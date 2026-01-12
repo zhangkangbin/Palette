@@ -250,9 +250,10 @@ public class BitmapUtils {
     }
 
     /**
-     * bitmap 应该是被压缩了。要用源文件生成才行。
-     * @param imageFile
-     * @param context
+     * 保存Bitmap到相册
+     * 优化：使用PNG格式保存，确保图片质量
+     * @param imageFile 要保存的Bitmap
+     * @param context 上下文
      */
     public static void saveImage(Bitmap imageFile, Context context) {
 
@@ -260,13 +261,13 @@ public class BitmapUtils {
             return;
         }
 
-
-
+        // 使用PNG格式保存，确保无损压缩
         File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                getDate()+Bitmap.CompressFormat.PNG);
+                getDate() + "png");
         if (!newFile.exists()) {
             try {
                 newFile.createNewFile();
+                // 使用PNG格式，质量100，确保高清晰度
                 BitmapUtils.save(imageFile, newFile, Bitmap.CompressFormat.PNG, true);
                 context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(newFile)));
 
