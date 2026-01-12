@@ -70,7 +70,7 @@ class AddWordsViewModel :ViewModel() {
         
         // 3. 绘制文字（在原图下方，左右各留边距）
         val textStartX = margin.toFloat()
-        var currentY = originalBitmap.height + margin + lineHeight - textPaint.fontMetrics.ascent
+        var currentY = originalBitmap.height + (margin/1.5).toFloat() + lineHeight - textPaint.fontMetrics.ascent
         
         for (line in lines) {
             canvas.drawText(line, textStartX, currentY, textPaint)
