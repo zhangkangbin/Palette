@@ -30,7 +30,6 @@ class AddWordsActivity : AppCompatActivity() {
         val model: AddWordsViewModel by viewModels()
         val addWordsImage = findViewById<ImageView>(R.id.addWordsImage)
         val addWordsTvWords = findViewById<TextView>(R.id.addWordsTvWords)
-        val addWordsTvAuthor = findViewById<TextView>(R.id.addWordsTvAuthor)
         findViewById<View>(R.id.addWordsLayout).setOnLongClickListener { v ->
             if (v != null) {
                 model.saveBitmap(applicationContext, v){
@@ -69,14 +68,10 @@ class AddWordsActivity : AppCompatActivity() {
                     } else if (lists.size == 1) {
 
                         addWordsTvWords.text = lists[0]
-                        addWordsTvAuthor.text = ""
                         //hide the view if there is no author.
-                        addWordsTvAuthor.visibility = View.GONE
                         //  addWordsTvAuthor.text="———"+lists[1]
                     } else {
-                        addWordsTvAuthor.visibility = View.VISIBLE
                         addWordsTvWords.text = lists[0]
-                        addWordsTvAuthor.text = "——" + lists[1]
                     }
 
 

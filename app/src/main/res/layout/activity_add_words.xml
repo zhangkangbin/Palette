@@ -31,7 +31,9 @@
                     android:id="@+id/addWordsImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginBottom="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
                     android:src="@drawable/demo_img2" />
@@ -41,24 +43,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="15dp"
                     android:gravity="left"
-                    android:lineHeight="22dp"
+                    android:lineHeight="16dp"
                     android:textSize="12sp"
                     android:text="这个五彩斑斓的世界，只需要RGB三原色就可以混合出来，三原色可以表示为向量组，所有颜色构成的向量空间，即色彩空间。" />
 
-
-                <TextView
-
-                    android:id="@+id/addWordsTvAuthor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="—— 线性代数" />
 
 
             </LinearLayout>
@@ -73,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:text="这个五彩斑斓的世界，只需要RGB三原色就可以混合出来，三原色可以表示为向量组，所有颜色构成的向量空间，即色彩空间。——线性代数" />
+                android:text="这个五彩斑斓的世界，只需要RGB三原色就可以混合出来，三原色可以表示为向量组，所有颜色构成的向量空间，即色彩空间。" />
 
             <TextView
                 android:textStyle="bold"
